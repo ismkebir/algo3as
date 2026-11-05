@@ -1,0 +1,1828 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Algo3AS : écrire, exécuter et suivre pas à pas des algorithmes en pseudo-code français (syntaxe du livre Informatique 3AS).">
+<link rel="icon" href="icon.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
+<title>Algo3AS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Mise en page : application plein écran — éditeur « cahier » à gauche, résultats / variables / trace à droite sur grand écran ; onglets sur téléphone. */
+:root{
+  --bg:#eef1f6; --panel:#ffffff; --panel2:#f5f7fb; --ink:#1b2333; --muted:#657088; --line:#d9dfe9; --line2:#c7d1e1;
+  --brand:#1f56b8; --brand-ink:#ffffff; --brand-soft:#e6eefb; --brand-soft-ink:#1f56b8;
+  --go:#15803d; --go-ink:#ffffff; --stop-bg:#fde4e4; --stop-ink:#a40f0f;
+  --kw:#0b46b4; --lg:#8a1f97; --st:#a13c06; --nb:#08794a; --ar:#c40d0d; --cm:#868d99; --fn:#007585; --er:#d10c0c;
+  --cur:#ffe983; --cur-gut:#f6c624; --cur-gut-ink:#1b1400; --errbg:#ffd3d3; --err-gut:#e04848; --err-gut-ink:#ffffff;
+  --errbar-bg:#fdeaea; --errbar-ink:#8f0b0b; --errbar-line:#f2b8b8;
+  --gut-bg:#eef1f6; --gut-ink:#98a1b2; --caret:#111827; --sel:rgba(31,86,184,.25);
+  --sym-bg:#e6ebf3; --key:#ffffff; --key-line:#cbd4e2; --key-press:#dbe6f8;
+  --out-bg:#fbfbf6; --out-in:#0a58c9; --out-sys:#8a909c; --out-ok:#127a3c; --out-warn:#a95d00;
+  --chg:#fff4bf; --chg-mark:#c08400; --note:#7a4b00;
+  --scrim:rgba(12,18,30,.48); --toast-bg:#1f2633; --toast-ink:#ffffff; --field-line:#9fb6e3;
+  --shadow:0 8px 28px rgba(15,25,45,.22);
+  --ui:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,"Roboto Mono","Droid Sans Mono",monospace;
+  --fs:15px; --lh:23px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1420; --panel:#161d2b; --panel2:#1b2333; --ink:#e3e8f2; --muted:#9aa5bb; --line:#2a3447; --line2:#36435a;
+  --brand:#5b8ff0; --brand-ink:#0b1222; --brand-soft:#1e2c47; --brand-soft-ink:#9fbefa;
+  --go:#22a35a; --go-ink:#06140b; --stop-bg:#3a1b1e; --stop-ink:#ff9d9d;
+  --kw:#82aaff; --lg:#e08cf0; --st:#f0a36d; --nb:#5fd49a; --ar:#ff7a7a; --cm:#7d8698; --fn:#5cd0de; --er:#ff6b6b;
+  --cur:#4a4012; --cur-gut:#d9ac1c; --cur-gut-ink:#140f00; --errbg:#4a1f22; --err-gut:#d34848; --err-gut-ink:#ffffff;
+  --errbar-bg:#3a1c1f; --errbar-ink:#ffb4b4; --errbar-line:#5c2a2e;
+  --gut-bg:#121928; --gut-ink:#5f6b82; --caret:#f1f5ff; --sel:rgba(91,143,240,.35);
+  --sym-bg:#121928; --key:#1f2838; --key-line:#323e55; --key-press:#2a3650;
+  --out-bg:#121826; --out-in:#7fb0ff; --out-sys:#7b8496; --out-ok:#5fd49a; --out-warn:#f0b35a;
+  --chg:#3d3514; --chg-mark:#e2b33a; --note:#e6b56a;
+  --scrim:rgba(0,0,0,.6); --toast-bg:#e3e8f2; --toast-ink:#121826; --field-line:#3f5b8f;
+  --shadow:0 8px 28px rgba(0,0,0,.5);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1420; --panel:#161d2b; --panel2:#1b2333; --ink:#e3e8f2; --muted:#9aa5bb; --line:#2a3447; --line2:#36435a;
+  --brand:#5b8ff0; --brand-ink:#0b1222; --brand-soft:#1e2c47; --brand-soft-ink:#9fbefa;
+  --go:#22a35a; --go-ink:#06140b; --stop-bg:#3a1b1e; --stop-ink:#ff9d9d;
+  --kw:#82aaff; --lg:#e08cf0; --st:#f0a36d; --nb:#5fd49a; --ar:#ff7a7a; --cm:#7d8698; --fn:#5cd0de; --er:#ff6b6b;
+  --cur:#4a4012; --cur-gut:#d9ac1c; --cur-gut-ink:#140f00; --errbg:#4a1f22; --err-gut:#d34848; --err-gut-ink:#ffffff;
+  --errbar-bg:#3a1c1f; --errbar-ink:#ffb4b4; --errbar-line:#5c2a2e;
+  --gut-bg:#121928; --gut-ink:#5f6b82; --caret:#f1f5ff; --sel:rgba(91,143,240,.35);
+  --sym-bg:#121928; --key:#1f2838; --key-line:#323e55; --key-press:#2a3650;
+  --out-bg:#121826; --out-in:#7fb0ff; --out-sys:#7b8496; --out-ok:#5fd49a; --out-warn:#f0b35a;
+  --chg:#3d3514; --chg-mark:#e2b33a; --note:#e6b56a;
+  --scrim:rgba(0,0,0,.6); --toast-bg:#e3e8f2; --toast-ink:#121826; --field-line:#3f5b8f;
+  --shadow:0 8px 28px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#app{display:flex;flex-direction:column;height:100%}
+header{flex:none;background:var(--brand);color:var(--brand-ink)}
+header .in{display:flex;align-items:center;gap:8px;height:52px}
+header h1{font-size:18px;margin:0;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em}
+header h1 small{font-weight:400;opacity:.85;font-size:13.5px}
+.ibtn{background:none;border:0;color:inherit;width:42px;height:42px;border-radius:10px;font-size:21px;display:grid;place-items:center;flex:none}
+.ibtn:hover{background:rgba(255,255,255,.14)}
+nav.tabs{flex:none;background:var(--panel);border-bottom:1px solid var(--line)}
+nav.tabs .in{display:flex}
+nav.tabs button{flex:1;border:0;background:none;padding:11px 2px 9px;font-size:14px;color:var(--muted);border-bottom:3px solid transparent;font-weight:700}
+nav.tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+nav.tabs .badge[hidden]{display:none}
+nav.tabs .badge{display:inline-block;min-width:18px;padding:0 5px;border-radius:9px;background:var(--brand);color:var(--brand-ink);font-size:11px;margin-left:4px;line-height:18px;font-variant-numeric:tabular-nums}
+main{flex:1;min-height:0;display:flex;flex-direction:column;padding-block:10px}
+.cols{flex:1;min-height:0;position:relative}
+.pane{position:absolute;inset:0;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.pane.on{display:flex}
+.ptitle{display:none;flex:none;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel2)}
+/* éditeur */
+#errbar{display:none;background:var(--errbar-bg);color:var(--errbar-ink);border-bottom:1px solid var(--errbar-line);padding:8px 10px;font-size:14px;line-height:1.4;flex:none}
+#errbar.on{display:flex;gap:8px;align-items:flex-start}
+#errbar span{flex:1;min-width:0}
+#errbar button{border:0;background:none;font-size:18px;color:inherit;padding:0 4px}
+.edwrap{flex:1;min-height:0;display:flex;background:var(--panel);position:relative}
+#gutter{flex:none;width:46px;background:var(--gut-bg);border-right:1px solid var(--line);overflow:hidden;position:relative}
+#gutter .gin{position:absolute;left:0;right:0;top:0;padding-top:8px}
+#gutter div{height:var(--lh);line-height:var(--lh);font-family:var(--mono);font-size:calc(var(--fs) * .78);text-align:right;padding-right:7px;color:var(--gut-ink);font-variant-numeric:tabular-nums}
+#gutter div.cur{background:var(--cur-gut);color:var(--cur-gut-ink);font-weight:700}
+#gutter div.err{background:var(--err-gut);color:var(--err-gut-ink);font-weight:700}
+.edbox{flex:1;min-width:0;position:relative;overflow:hidden}
+#hl,#code{margin:0;border:0;padding:8px 10px 40vh 9px;font-family:var(--mono);font-size:var(--fs);line-height:var(--lh);white-space:pre;tab-size:4;letter-spacing:0;font-variant-ligatures:none}
+#hl{position:absolute;left:0;top:0;min-width:100%;pointer-events:none;color:var(--ink)}
+#hl .L{display:block;height:var(--lh)}
+#hl .L.cur{background:var(--cur)}
+#hl .L.err{background:var(--errbg)}
+#code{position:absolute;inset:0;width:100%;height:100%;resize:none;outline:none;background:transparent;color:transparent;caret-color:var(--caret);overflow:auto;-webkit-text-fill-color:transparent}
+#code:focus-visible{outline:none}
+#code::selection{background:var(--sel);-webkit-text-fill-color:transparent}
+.kw{color:var(--kw);font-weight:700}.lg{color:var(--lg);font-weight:700}.st{color:var(--st)}.nb{color:var(--nb)}.ar{color:var(--ar);font-weight:700}.cm{color:var(--cm);font-style:italic}.fn{color:var(--fn)}.er{color:var(--er);font-weight:700;text-decoration:underline wavy}
+#symbar{flex:none;display:flex;gap:6px;overflow-x:auto;padding:7px 8px;background:var(--sym-bg);border-top:1px solid var(--line);scrollbar-width:thin}
+#symbar button{flex:none;min-width:40px;height:36px;border-radius:8px;border:1px solid var(--key-line);background:var(--key);font-size:17px;padding:0 10px;font-family:var(--mono)}
+#symbar button.w{font-family:var(--ui);font-size:13.5px;font-weight:700;color:var(--kw)}
+#symbar button:hover{background:var(--key-press)}
+/* dock pas à pas (téléphone) */
+#dock{display:none;flex:none;height:38%;min-height:150px;border-top:2px solid var(--brand);background:var(--panel);flex-direction:column}
+#dock.on{display:flex}
+#dock .dh{display:flex;align-items:center;gap:6px;padding:5px 6px;background:var(--brand-soft);border-bottom:1px solid var(--line)}
+#dock .dh button.seg{border:1px solid var(--line2);background:var(--panel);border-radius:16px;padding:4px 12px;font-size:13px;font-weight:700;color:var(--muted)}
+#dock .dh button.seg.on{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+#dock .dh .sp{flex:1}
+#dock .dh .x{border:0;background:none;font-size:18px;color:var(--muted);padding:2px 8px}
+#dock .db{flex:1;overflow:auto}
+#dockinfo{font-size:12.5px;color:var(--muted);padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+/* sortie */
+.out{font-family:var(--mono);font-size:var(--fs);line-height:1.5;padding:10px 12px;white-space:pre-wrap;word-break:break-word;overflow:auto;flex:1;background:var(--out-bg);color:var(--ink)}
+.out .i{color:var(--out-in);font-weight:700}
+.out .e{color:var(--er);font-weight:700}
+.out .s{color:var(--out-sys)}
+.out .ok{color:var(--out-ok);font-weight:700}
+.out .w{color:var(--out-warn);font-weight:700}
+.empty{color:var(--muted);text-align:center;padding:30px 16px;font-size:14px;line-height:1.55;font-family:var(--ui);white-space:normal}
+/* tableaux */
+.tbl{overflow:auto;flex:1;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{position:sticky;top:0;background:var(--panel2);font-size:12px;color:var(--muted);font-weight:700;z-index:1;letter-spacing:.04em;text-transform:uppercase}
+td.v{font-family:var(--mono);font-weight:700;word-break:break-word}
+td.n{font-variant-numeric:tabular-nums;color:var(--muted)}
+tr.chg td{background:var(--chg)}
+tr.chg td.v::after{content:"  ◄";color:var(--chg-mark)}
+#tracet td{font-size:13px}
+#tracet td.ins{font-family:var(--mono);white-space:nowrap}
+#tracet td.vs{font-family:var(--mono)}
+#tracet td.nt{color:var(--note)}
+/* barre d'actions */
+footer{flex:none;background:var(--panel);border-top:1px solid var(--line)}
+footer .in{display:grid;grid-template-columns:1.25fr 1.25fr 1fr .9fr;gap:6px;padding-block:7px;max-width:760px;margin:0 auto}
+footer button{border:0;border-radius:12px;height:46px;font-weight:700;font-size:14.5px;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+#bRun{background:var(--go);color:var(--go-ink)}
+#bStep{background:var(--brand);color:var(--brand-ink)}
+#bAnim{background:var(--brand-soft);color:var(--brand-soft-ink)}
+#bStop{background:var(--stop-bg);color:var(--stop-ink)}
+footer button:disabled{opacity:.4;cursor:default}
+footer button:hover:not(:disabled){filter:brightness(.95)}
+footer kbd{font-family:var(--ui);font-size:11px;opacity:.75;font-weight:400}
+#status{flex:none;font-size:13px;color:var(--muted);padding-block:4px;background:var(--panel);border-top:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:24px}
+/* tiroir & modales */
+.scrim{position:fixed;inset:0;background:var(--scrim);display:none;z-index:20}
+.scrim.on{display:block}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(84vw,340px);background:var(--panel);z-index:21;transform:translateX(-105%);transition:transform .2s;display:flex;flex-direction:column;box-shadow:var(--shadow);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px)}
+#drawer.on{transform:none}
+#drawer .dhd{background:var(--brand);color:var(--brand-ink);padding:22px 18px 16px}
+#drawer .dhd b{font-size:20px;display:block}
+#drawer .dhd span{font-size:13px;opacity:.88}
+#drawer .items{overflow:auto;flex:1;padding:6px 0}
+#drawer .items button{display:flex;gap:14px;align-items:center;width:100%;border:0;background:none;padding:12px 18px;font-size:15px;text-align:left}
+#drawer .items button:hover{background:var(--brand-soft)}
+#drawer .items i{font-style:normal;width:22px;text-align:center;font-size:17px;color:var(--brand)}
+#drawer hr{border:0;border-top:1px solid var(--line);margin:6px 0}
+#drawer .row{display:flex;align-items:center;gap:8px;padding:8px 18px;font-size:14px;color:var(--muted)}
+#drawer .row button{border:1px solid var(--line2);background:var(--panel);border-radius:8px;min-width:42px;height:34px;font-size:14px;font-weight:700}
+#drawer .row .sp{flex:1}
+.modal{position:fixed;left:0;right:0;bottom:0;z-index:31;background:var(--panel);border-radius:18px 18px 0 0;max-height:88%;display:none;flex-direction:column;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom,0px)}
+.modal.on{display:flex}
+.modal.center{top:50%;bottom:auto;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));transform:translateY(-50%);border-radius:16px;max-width:520px;margin:0 auto}
+@media (min-width:700px){.modal{left:50%;right:auto;width:600px;transform:translateX(-50%);bottom:auto;top:8%;border-radius:16px;max-height:84%}}
+.modal h2{margin:0;font-size:18px;padding:16px 18px 8px;text-wrap:balance}
+.modal .mb{overflow:auto;padding:0 18px 12px;font-size:15px;line-height:1.5}
+.modal .mf{display:flex;gap:8px;padding:10px 14px 14px;justify-content:flex-end;flex-wrap:wrap}
+.modal .mf button{border:0;border-radius:10px;padding:11px 18px;font-weight:700;font-size:14.5px;background:var(--panel2);border:1px solid var(--line)}
+.modal .mf button.p{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.modal .mf button.d{background:var(--stop-bg);color:var(--stop-ink);border-color:transparent}
+.field{width:100%;font-size:17px;padding:10px 12px;border:2px solid var(--field-line);border-radius:10px;background:var(--panel);color:var(--ink);font-family:var(--ui)}
+textarea.field{height:40vh;font-family:var(--mono);font-size:14px}
+#mInput input{width:100%;font-size:19px;padding:11px 12px;border:2px solid var(--field-line);border-radius:10px;font-family:var(--mono);outline:none;background:var(--panel);color:var(--ink)}
+#mInput input:focus{border-color:var(--brand)}
+#mInput .q{background:var(--panel2);border-radius:10px;padding:8px 10px;margin:6px 0 10px;font-family:var(--mono);font-size:14px}
+#mInput .lab{font-weight:700;margin-bottom:6px}
+#mInput .err{color:var(--er);font-size:14px;min-height:18px;margin-top:6px}
+#mInput .irow{display:flex;gap:8px}
+#mInput .irow button{flex:none;border:1px solid var(--line2);background:var(--panel);border-radius:10px;width:48px;font-size:20px}
+.list button.it{display:flex;width:100%;text-align:left;border:0;background:none;padding:11px 4px;border-bottom:1px solid var(--line);font-size:15px;gap:8px;align-items:center}
+.list button.it:hover{background:var(--brand-soft)}
+.list .grp{font-size:12px;font-weight:700;color:var(--brand);padding:14px 4px 4px;text-transform:uppercase;letter-spacing:.06em}
+.list .it span{flex:1;min-width:0}
+.list .del{border:0;background:var(--stop-bg);color:var(--stop-ink);border-radius:8px;padding:6px 10px;font-size:13px}
+#helpbody pre{white-space:pre-wrap;font-family:var(--mono);font-size:13px;line-height:1.5;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(130px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--toast-bg);color:var(--toast-ink);padding:9px 16px;border-radius:20px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90%;text-align:center}
+.toast.on{opacity:.95}
+/* grand écran : éditeur + résultats côte à côte */
+@media (min-width:900px){
+  nav.tabs{display:none}
+  .cols{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:12px}
+  .pane{position:relative;inset:auto}
+  #p-ed{display:flex;grid-column:1;grid-row:1}
+  .right{grid-column:2;grid-row:1;display:flex;flex-direction:column;min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .right .rtabs{display:flex;flex:none;border-bottom:1px solid var(--line);background:var(--panel2)}
+  .right .rtabs button{flex:1;border:0;background:none;padding:10px 4px 8px;font-weight:700;font-size:13.5px;color:var(--muted);border-bottom:3px solid transparent}
+  .right .rtabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+  .right .pane{border:0;border-radius:0;flex:1;min-height:0}
+  #dock{display:none!important}
+  #p-ed .ptitle{display:block}
+}
+@media (max-width:899px){ .right{display:contents} .right .rtabs{display:none} }
+@media (prefers-reduced-motion:reduce){#drawer,.toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header><div class="in gut">
+    <button class="ibtn" id="bMenu" aria-label="Menu">☰</button>
+    <h1 id="title">Algo3AS <small>· Sans titre</small></h1>
+    <button class="ibtn" id="bHelp" aria-label="Aide">?</button>
+  </div></header>
+  <nav class="tabs"><div class="in gut">
+    <button data-t="ed" class="on">Algorithme</button>
+    <button data-t="out">Résultats<span class="badge" id="outBadge" hidden>0</span></button>
+    <button data-t="vars">Variables</button>
+    <button data-t="trace">Trace</button>
+  </div></nav>
+  <main class="gut">
+    <div class="cols">
+      <section class="pane on" id="p-ed">
+        <div class="ptitle">Algorithme</div>
+        <div id="errbar"><span id="errtxt"></span><button id="errx" aria-label="Fermer">×</button></div>
+        <div class="edwrap">
+          <div id="gutter"><div class="gin" id="gin"></div></div>
+          <div class="edbox">
+            <pre id="hl" aria-hidden="true"></pre>
+            <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="Algorithme"></textarea>
+          </div>
+        </div>
+        <div id="dock">
+          <div class="dh">
+            <button class="seg on" data-d="vars">Variables</button>
+            <button class="seg" data-d="out">Sortie</button>
+            <span id="dockinfo"></span><span class="sp"></span>
+            <button class="x" id="dockx" aria-label="Fermer">×</button>
+          </div>
+          <div class="db" id="dockbody"></div>
+        </div>
+        <div id="symbar"></div>
+      </section>
+      <div class="right">
+        <div class="rtabs">
+          <button data-r="out" class="on">Résultats</button>
+          <button data-r="vars">Variables</button>
+          <button data-r="trace">Trace (tableau de test)</button>
+        </div>
+        <section class="pane" id="p-out"><div class="out" id="out"><div class="empty">Les résultats affichés par Écrire / Afficher apparaîtront ici.<br>Appuyez sur ▶ Exécuter.</div></div></section>
+        <section class="pane" id="p-vars"><div class="tbl" id="varsbox"><div class="empty">Les variables et leurs valeurs apparaîtront ici pendant l'exécution.</div></div></section>
+        <section class="pane" id="p-trace"><div class="tbl" id="tracebox"><div class="empty">La trace (tableau de test) montre, instruction par instruction, les valeurs des variables.</div></div></section>
+      </div>
+    </div>
+  </main>
+  <div id="status" class="gut">Chargement…</div>
+  <footer><div class="in gut">
+    <button id="bRun" title="F5">▶ Exécuter</button>
+    <button id="bStep" title="F10">⏭ Pas à pas</button>
+    <button id="bAnim" title="F6">⏵ Animer</button>
+    <button id="bStop" disabled title="Échap">■ Stop</button>
+  </div></footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside id="drawer">
+  <div class="dhd"><b>Algo3AS</b><span>Algorithmes en pseudo-code — Informatique 3AS</span></div>
+  <div class="items">
+    <button data-a="new"><i>＋</i>Nouvel algorithme</button>
+    <button data-a="open"><i>▤</i>Mes algorithmes</button>
+    <button data-a="save"><i>✓</i>Enregistrer</button>
+    <button data-a="saveas"><i>✎</i>Enregistrer sous…</button>
+    <hr>
+    <button data-a="examples"><i>❖</i>Exemples du livre</button>
+    <button data-a="copy"><i>⧉</i>Copier l'algorithme</button>
+    <button data-a="paste"><i>⇩</i>Coller un algorithme</button>
+    <hr>
+    <div class="row">Taille du texte<span class="sp"></span><button data-a="fs-">A−</button><button data-a="fs+">A+</button></div>
+    <div class="row">Vitesse d'animation<span class="sp"></span><button data-a="sp-" title="plus lent">lent</button><button data-a="sp+" title="plus rapide">rapide</button></div>
+    <hr>
+    <button data-a="help"><i>?</i>Aide — syntaxe</button>
+    <button data-a="about"><i>i</i>À propos</button>
+  </div>
+</aside>
+
+<div class="modal center" id="mInput" role="dialog" aria-modal="true">
+  <h2 id="inTitle">Lire</h2>
+  <div class="mb">
+    <div class="q" id="inQ"></div>
+    <div class="lab" id="inLab"></div>
+    <div class="irow"><input id="inVal" autocomplete="off" autocapitalize="off" spellcheck="false"><button id="inNeg" title="Changer le signe">±</button></div>
+    <div class="err" id="inErr"></div>
+  </div>
+  <div class="mf"><button class="d" id="inStop">Arrêter</button><button class="p" id="inOk">Valider</button></div>
+</div>
+
+<div class="modal" id="mGen" role="dialog" aria-modal="true">
+  <h2 id="gTitle"></h2>
+  <div class="mb" id="gBody"></div>
+  <div class="mf" id="gFoot"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+/* Algo3AS — interpréteur du pseudo-code du livre « Informatique 3AS »
+   (portage JavaScript fidèle de l'interpréteur Go de la version Windows). */
+(function (global) {
+"use strict";
+
+// ---------------------------------------------------------------- lexer
+const T = { EOF: 0, NL: 1, ID: 2, NUM: 3, STR: 4, CHR: 5, OP: 6, TO: 7, COM: 8, ERR: 9 };
+const ACC = { 'à':'a','â':'a','ä':'a','á':'a','ã':'a','é':'e','è':'e','ê':'e','ë':'e','î':'i','ï':'i','í':'i','ì':'i',
+  'ô':'o','ö':'o','ó':'o','ò':'o','û':'u','ù':'u','ü':'u','ú':'u','ç':'c','œ':'oe','æ':'ae','ÿ':'y','ñ':'n' };
+function norm(s) { let o = ''; for (const c of s.toLowerCase()) o += ACC[c] !== undefined ? ACC[c] : c; return o; }
+const isStrQuote = c => c === '"' || c === '“' || c === '”' || c === '«' || c === '»' || c === '„';
+const isApos = c => c === "'" || c === '’' || c === '‘';
+const isLetter = c => /\p{L}/u.test(c);
+const isDigit = c => /\p{Nd}/u.test(c);
+const isIdStart = c => isLetter(c) || c === '_';
+const isIdPart = c => isLetter(c) || isDigit(c) || c === '_';
+const isAsciiDigit = c => c >= '0' && c <= '9';
+
+function lex(src, keepComments) {
+  const rs = Array.from(src), n = rs.length, toks = [];
+  let line = 1, col = 1, pos = 0, i = 0, atStart = true;
+  const emit = t => { if (t.kind === T.COM && !keepComments) return; toks.push(t); };
+  const adv = () => { pos += rs[i].length; col++; i++; };
+  while (i < n) {
+    const r = rs[i];
+    if (r === '\r' || r === '\n') {
+      const st = pos;
+      if (r === '\r' && rs[i + 1] === '\n') { i += 2; pos += 2; } else { i++; pos++; }
+      emit({ kind: T.NL, text: '\n', key: '\n', line, col, pos: st, end: pos });
+      line++; col = 1; atStart = true; continue;
+    }
+    if (r === ' ' || r === '\t' || r === ' ' || r === ' ' || r === '﻿') { adv(); continue; }
+    if (atStart) {
+      atStart = false;
+      if (r === '•') { adv(); continue; }
+      if (isDigit(r)) {
+        let j = i; while (j < n && isDigit(rs[j])) j++;
+        if (j < n && (rs[j] === '.' || rs[j] === ')') && j + 1 < n && (rs[j + 1] === ' ' || rs[j + 1] === '\t')) {
+          let k = j + 1; while (k < n && (rs[k] === ' ' || rs[k] === '\t')) k++;
+          if (k < n && isIdStart(rs[k])) {
+            const sl = line, sc = col, sp = pos, st = i;
+            while (i < j + 1) adv();
+            emit({ kind: T.COM, text: rs.slice(st, i).join(''), line: sl, col: sc, pos: sp, end: pos });
+            continue;
+          }
+        }
+      }
+    }
+    const sl = line, sc = col, sp = pos;
+    if ((r === '/' && rs[i + 1] === '/') || r === '#') {
+      const st = i; while (i < n && rs[i] !== '\n' && rs[i] !== '\r') adv();
+      emit({ kind: T.COM, text: rs.slice(st, i).join(''), line: sl, col: sc, pos: sp, end: pos }); continue;
+    }
+    if (isStrQuote(r)) {
+      adv(); const st = i;
+      while (i < n && !isStrQuote(rs[i]) && rs[i] !== '\n' && rs[i] !== '\r') adv();
+      const content = rs.slice(st, i).join('').replace(/[  ]/g, ' ');
+      if (i < n && isStrQuote(rs[i])) { adv(); emit({ kind: T.STR, text: content, key: content, line: sl, col: sc, pos: sp, end: pos }); }
+      else emit({ kind: T.ERR, text: 'chaîne non terminée (il manque le guillemet fermant)', line: sl, col: sc, pos: sp, end: pos });
+      continue;
+    }
+    if (isApos(r)) {
+      adv(); const st = i;
+      while (i < n && !isApos(rs[i]) && rs[i] !== '\n' && rs[i] !== '\r') adv();
+      const content = rs.slice(st, i).join('');
+      if (i < n && isApos(rs[i])) { adv(); emit({ kind: Array.from(content).length === 1 ? T.CHR : T.STR, text: content, key: content, line: sl, col: sc, pos: sp, end: pos }); }
+      else emit({ kind: T.ERR, text: 'apostrophe non fermée', line: sl, col: sc, pos: sp, end: pos });
+      continue;
+    }
+    if (isDigit(r)) {
+      const st = i; while (i < n && isDigit(rs[i])) adv();
+      let isInt = true;
+      if (i + 1 < n && rs[i] === '.' && isDigit(rs[i + 1])) { isInt = false; adv(); while (i < n && isDigit(rs[i])) adv(); }
+      const txt = rs.slice(st, i).join('');
+      emit({ kind: T.NUM, text: txt, key: txt, num: parseFloat(txt.replace(/\p{Nd}/gu, d => String(d.charCodeAt(0) & 0xf))), isInt, line: sl, col: sc, pos: sp, end: pos });
+      continue;
+    }
+    if (isIdStart(r)) {
+      const st = i; while (i < n && isIdPart(rs[i])) adv();
+      let txt = rs.slice(st, i).join(''), key = norm(txt);
+      if (key === 'jusqu' && i + 1 < n && isApos(rs[i]) && 'àaÀA'.includes(rs[i + 1])) { adv(); adv(); txt = rs.slice(st, i).join(''); key = 'jusqua'; }
+      if (txt === 'à' || txt === 'À') { emit({ kind: T.TO, text: txt, key: 'a', line: sl, col: sc, pos: sp, end: pos }); continue; }
+      emit({ kind: T.ID, text: txt, key, line: sl, col: sc, pos: sp, end: pos }); continue;
+    }
+    const two = i + 1 < n ? r + rs[i + 1] : '';
+    let op = '', width = 1;
+    switch (two) {
+      case '<-': case ':=': op = '←'; width = 2; break;
+      case '<=': case '=<': op = '<='; width = 2; break;
+      case '>=': case '=>': op = '>='; width = 2; break;
+      case '<>': case '!=': op = '<>'; width = 2; break;
+      case '==': op = '='; width = 2; break;
+      case '..': op = '..'; width = 2; break;
+      case '**': op = '^'; width = 2; break;
+    }
+    if (!op) {
+      if ('←⟵⇐'.includes(r)) op = '←';
+      else if (r === '+') op = '+';
+      else if ('-−–'.includes(r)) op = '-';
+      else if ('*×·⋅'.includes(r)) op = '*';
+      else if (r === '/' || r === '÷') op = '/';
+      else if (r === '^') op = '^';
+      else if (r === '%') op = '%';
+      else if ('()[],:;=<>'.includes(r)) op = r;
+      else if (r === '≤' || r === '⩽') op = '<=';
+      else if (r === '≥' || r === '⩾') op = '>=';
+      else if (r === '≠') op = '<>';
+    }
+    if (op) { const st = i; for (let w = 0; w < width; w++) adv(); emit({ kind: T.OP, text: rs.slice(st, i).join(''), key: op, line: sl, col: sc, pos: sp, end: pos }); continue; }
+    adv();
+    emit({ kind: T.ERR, text: 'caractère inattendu « ' + r + ' »', line: sl, col: sc, pos: sp, end: pos });
+  }
+  toks.push({ kind: T.EOF, text: '', key: '', line, col, pos, end: pos });
+  return toks;
+}
+
+// ---------------------------------------------------------------- erreurs
+class AlgoError extends Error {
+  constructor(line, msg, syntax) { super(msg); this.line = line; this.syntax = !!syntax; }
+  full() { const k = this.syntax ? "Erreur de syntaxe" : "Erreur d'exécution"; return this.line > 0 ? k + ' (ligne ' + this.line + ') : ' + this.message : k + ' : ' + this.message; }
+}
+const STOP = { stop: true };
+const synErr = (t, msg) => new AlgoError(t.line, msg, true);
+const rtErr = (line, msg) => new AlgoError(line, msg, false);
+
+// ---------------------------------------------------------------- parser
+const RESERVED = new Set(['algorithme', 'variables', 'variable', 'var', 'constantes', 'constante', 'const', 'debut', 'fin', 'lire', 'saisir',
+  'ecrire', 'afficher', 'si', 'alors', 'sinon', 'sinonsi', 'finsi', 'fsi', 'pour', 'allant', 'faire', 'finpour', 'fpour',
+  'tant', 'que', 'tantque', 'fintantque', 'fintq', 'ftq', 'repeter', 'jusqua', 'et', 'ou', 'non', 'div', 'mod', 'vrai', 'faux']);
+const BUILTINS = { abs: 1, racine: 1, rac: 1, sqrt: 1, ent: 1, arrondi: 1, longueur: 1, long: 1, alea: 1, max: 2, min: 2, carre: 1 };
+const EXTRA_KW = new Set(['entier', 'entiers', 'reel', 'reels', 'chaine', 'chaines', 'caractere', 'caracteres', 'booleen', 'booleens', 'tableau', 'de', 'pas', 'declaration']);
+const isKeyword = k => RESERVED.has(k) || EXTRA_KW.has(k);
+const isBuiltin = k => Object.prototype.hasOwnProperty.call(BUILTINS, k);
+const STMT_KW = ['Lire', 'Écrire', 'Afficher', 'Si', 'Sinon', 'FinSi', 'Pour', 'FinPour', 'TantQue', 'FinTantQue', 'Répéter', "Jusqu'à", 'Début', 'Fin', 'Alors', 'Faire'];
+const TYPE_LABEL = { entier: 'entier', reel: 'réel', chaine: 'chaîne', caractere: 'caractère', booleen: 'booléen' };
+const typeLabel = b => TYPE_LABEL[b] || b;
+const typeStr = t => !t ? '' : (t.isArray ? 'tableau[' + t.lo + '..' + t.hi + '] de ' + typeLabel(t.base) : typeLabel(t.base));
+const TERM_LABEL = { finsi: 'FinSi', finpour: 'FinPour', fintantque: 'FinTantQue', sinon: 'Sinon', sinonsi: 'SinonSi', jusqua: "Jusqu'à", fin: 'Fin' };
+
+function show(t) {
+  if (t.kind === T.EOF) return 'la fin du texte';
+  if (t.kind === T.NL) return 'la fin de la ligne';
+  if (t.kind === T.STR) return '«' + t.text + '»';
+  return '« ' + t.text + ' »';
+}
+function levenshtein(a, b) {
+  a = Array.from(a); b = Array.from(b);
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j), cur = new Array(b.length + 1);
+  for (let i = 1; i <= a.length; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    [prev, cur] = [cur, prev];
+  }
+  return prev[b.length];
+}
+function suggest(key) {
+  if (Array.from(key).length < 3) return '';
+  let best = '', bd = 3;
+  for (const k of STMT_KW) { const d = levenshtein(key, norm(k)); if (d < bd) { best = k; bd = d; } }
+  return best;
+}
+function expectedClose(o) { return { 'Si': 'FinSi', 'Pour': 'FinPour', 'TantQue': 'FinTantQue', 'Répéter': "Jusqu'à" }[o] || 'Fin'; }
+
+function parse(src) {
+  const toks = lex(src, false);
+  for (const t of toks) if (t.kind === T.ERR) throw new AlgoError(t.line, t.text, true);
+  let p = 0;
+  const peek = () => toks[p];
+  const peekN = k => toks[Math.min(p + k, toks.length - 1)];
+  const next = () => { const t = toks[p]; if (t.kind !== T.EOF) p++; return t; };
+  const isKey = k => { const t = peek(); return t.kind === T.ID && t.key === k; };
+  const isOp = o => { const t = peek(); return t.kind === T.OP && t.key === o; };
+  const isSep = () => { const t = peek(); return t.kind === T.NL || t.kind === T.EOF || (t.kind === T.OP && t.key === ';'); };
+  const skipSeps = () => { for (;;) { const t = peek(); if (t.kind === T.NL || (t.kind === T.OP && t.key === ';')) { p++; continue; } return; } };
+  const skipLine = () => { while (!(peek().kind === T.NL || peek().kind === T.EOF)) p++; };
+
+  const prog = { name: '', decls: [], consts: [], hasVarSection: false, body: [], lines: src.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n') };
+  const declared = {};
+
+  function identName(what) {
+    const t = peek();
+    if (t.kind !== T.ID) throw synErr(t, 'nom de ' + what + ' attendu, trouvé ' + show(t));
+    if (RESERVED.has(t.key)) throw synErr(t, '« ' + t.text + ' » est un mot réservé, il ne peut pas être un nom de ' + what);
+    return next();
+  }
+  function isSectionStart() {
+    const t = peek(); if (t.kind !== T.ID) return false;
+    return ['debut', 'variables', 'variable', 'var', 'constantes', 'constante', 'const'].includes(t.key);
+  }
+  function typeSpec() {
+    const t = peek();
+    if (t.kind !== T.ID) throw synErr(t, 'type attendu (entier, réel, chaîne, caractère, booléen)');
+    next();
+    switch (t.key) {
+      case 'entier': case 'entiers': case 'integer': case 'int': return { base: 'entier' };
+      case 'reel': case 'reels': case 'real': case 'nombre': case 'nombres': return { base: 'reel' };
+      case 'chaine': case 'chaines': case 'texte': case 'string':
+        if (isKey('de') && (peekN(1).key === 'caracteres' || peekN(1).key === 'caractere')) { next(); next(); }
+        return { base: 'chaine' };
+      case 'caractere': case 'caracteres': case 'car': case 'char': return { base: 'caractere' };
+      case 'booleen': case 'booleens': case 'logique': case 'boolean': return { base: 'booleen' };
+      case 'tableau': {
+        if (!isOp('[')) throw synErr(peek(), '« [ » attendu : tableau[1..10] de entier');
+        next();
+        let lo = 1, hi = 0;
+        const a = next();
+        if (a.kind !== T.NUM || !a.isInt) throw synErr(a, 'taille du tableau attendue (nombre entier)');
+        if (isOp('..')) {
+          next(); const b = next();
+          if (b.kind !== T.NUM || !b.isInt) throw synErr(b, 'borne supérieure du tableau attendue');
+          lo = a.num; hi = b.num;
+        } else hi = a.num;
+        if (!isOp(']')) throw synErr(peek(), '« ] » attendu');
+        next();
+        if (!isKey('de')) throw synErr(peek(), '« de » attendu : tableau[1..10] de entier');
+        next();
+        const el = typeSpec();
+        if (el.isArray) throw synErr(t, 'tableau de tableaux non pris en charge');
+        if (hi < lo || hi - lo > 100000) throw synErr(a, 'bornes du tableau incorrectes');
+        return { base: el.base, isArray: true, lo, hi };
+      }
+    }
+    throw synErr(t, 'type inconnu « ' + t.text + ' » (types possibles : entier, réel, chaîne, caractère, booléen)');
+  }
+  function declarations() {
+    for (;;) {
+      skipSeps();
+      if (peek().kind === T.EOF || isSectionStart()) return;
+      const start = peek(); const names = [], nts = [];
+      for (;;) { const nt = identName('variable'); names.push(nt.text); nts.push(nt); if (isOp(',')) { next(); continue; } break; }
+      if (!isOp(':')) throw synErr(peek(), '« : » attendu après le nom de variable, suivi du type (ex. : N : entier)');
+      next();
+      const ts = typeSpec();
+      for (const nt of nts) {
+        if (declared[nt.key] !== undefined) throw synErr(nt, 'la variable « ' + nt.text + ' » est déjà déclarée (ligne ' + declared[nt.key] + ')');
+        declared[nt.key] = nt.line;
+      }
+      prog.decls.push({ names, type: ts, line: start.line });
+      if (!isSep()) throw synErr(peek(), 'fin de ligne attendue après la déclaration, trouvé ' + show(peek()));
+    }
+  }
+  function constants() {
+    for (;;) {
+      skipSeps();
+      if (peek().kind === T.EOF || isSectionStart()) return;
+      const nt = identName('constante');
+      if (!(isOp('=') || isOp('←'))) throw synErr(peek(), '« = » attendu : PI = 3.14');
+      next();
+      const e = expr();
+      if (declared[nt.key] !== undefined) throw synErr(nt, '« ' + nt.text + ' » est déjà déclaré (ligne ' + declared[nt.key] + ')');
+      declared[nt.key] = nt.line;
+      prog.consts.push({ name: nt.text, expr: e, line: nt.line });
+      if (!isSep()) throw synErr(peek(), 'fin de ligne attendue, trouvé ' + show(peek()));
+    }
+  }
+  function term() {
+    const t = peek(); if (t.kind !== T.ID) return ['', 0];
+    const t2 = peekN(1); const k2 = t2.kind === T.ID ? t2.key : '';
+    switch (t.key) {
+      case 'finsi': case 'fsi': return ['finsi', 1];
+      case 'finpour': case 'fpour': return ['finpour', 1];
+      case 'fintantque': case 'fintq': case 'ftq': case 'ftantque': return ['fintantque', 1];
+      case 'fintant': if (k2 === 'que') return ['fintantque', 2]; break;
+      case 'sinonsi': return ['sinonsi', 1];
+      case 'sinon': return ['sinon', 1];
+      case 'jusqua': return ['jusqua', 1];
+      case 'jusqu': case 'jusque': return t2.kind === T.TO ? ['jusqua', 2] : ['jusqua', 1];
+      case 'fin':
+        switch (k2) {
+          case 'si': return ['finsi', 2];
+          case 'pour': return ['finpour', 2];
+          case 'tantque': case 'tq': return ['fintantque', 2];
+          case 'tant': if (peekN(2).key === 'que') return ['fintantque', 3]; break;
+        }
+        return ['fin', 1];
+    }
+    return ['', 0];
+  }
+  const consumeTerm = () => { const n = term()[1]; for (let i = 0; i < n; i++) next(); };
+  function block(stops, opener, openLine) {
+    const body = [];
+    for (;;) {
+      skipSeps();
+      const t = peek();
+      if (t.kind === T.EOF) return [body, ''];
+      const name = term()[0];
+      if (name) {
+        if (stops.has(name)) return [body, name];
+        if (opener === '' || opener === 'Début') {
+          if (name === 'fin') throw synErr(t, '« Fin » inattendu');
+          if (name === 'sinon' || name === 'sinonsi') throw synErr(t, '« ' + t.text + ' » sans « Si … Alors » correspondant');
+          throw synErr(t, '« ' + TERM_LABEL[name] + ' » inattendu : aucun bloc ouvert à fermer');
+        }
+        throw synErr(t, '« ' + TERM_LABEL[name] + ' » inattendu : le « ' + opener + ' » de la ligne ' + openLine + ' n\'est pas encore fermé (il manque ' + expectedClose(opener) + ')');
+      }
+      body.push(statement());
+      if (!isSep() && !term()[0]) throw synErr(peek(), 'fin d\'instruction attendue, trouvé ' + show(peek()) + ' (oubli d\'une virgule ou d\'un retour à la ligne ?)');
+    }
+  }
+  function lvalue() {
+    const nt = identName('variable');
+    const lv = { name: nt.text, key: nt.key, line: nt.line, col: nt.col, index: null };
+    if (isOp('[')) { next(); lv.index = expr(); if (!isOp(']')) throw synErr(peek(), '« ] » attendu'); next(); }
+    return lv;
+  }
+  function statement() {
+    const t = peek();
+    if (t.kind === T.EOF) throw synErr(t, 'instruction attendue');
+    if (t.kind !== T.ID) throw synErr(t, 'instruction attendue, trouvé ' + show(t));
+    switch (t.key) {
+      case 'lire': case 'saisir': next(); return readStmt(t);
+      case 'ecrire': case 'afficher': case 'imprimer': case 'ecrireln': next(); return writeStmt(t);
+      case 'si': next(); return ifStmt(t);
+      case 'pour': next(); return forStmt(t);
+      case 'tantque': next(); return whileStmt(t);
+      case 'tant': next(); if (!isKey('que')) throw synErr(peek(), '« Tant que » : le mot « que » est attendu'); next(); return whileStmt(t);
+      case 'repeter': next(); return repeatStmt(t);
+      case 'debut': throw synErr(t, '« Début » ne peut apparaître qu\'une seule fois');
+      case 'variables': case 'variable': case 'var': case 'constantes': case 'constante': throw synErr(t, 'les déclarations doivent être placées avant « Début »');
+      case 'alors': case 'faire': throw synErr(t, '« ' + t.text + ' » mal placé');
+    }
+    if (RESERVED.has(t.key)) throw synErr(t, '« ' + t.text + ' » mal placé ici');
+    const nt = peekN(1);
+    if (nt.kind === T.OP && (nt.key === '←' || nt.key === '[')) {
+      const lv = lvalue();
+      if (!isOp('←')) throw synErr(peek(), '« ← » attendu pour l\'affectation');
+      next();
+      if (isSep()) throw synErr(peek(), 'valeur attendue après « ← »');
+      return { k: 'assign', line: t.line, target: lv, expr: expr() };
+    }
+    if (nt.kind === T.OP && nt.key === '=') throw synErr(nt, 'pour donner une valeur à « ' + t.text + ' », utilisez la flèche ← (ou <-) : ' + t.text + ' ← …  (le signe = sert à comparer)');
+    if (nt.kind === T.OP && nt.key === ':') throw synErr(nt, 'déclaration mal placée : déclarez « ' + t.text + ' » dans la partie Variables, avant Début');
+    const s = suggest(t.key);
+    if (s) throw synErr(t, 'instruction inconnue « ' + t.text + ' » — vouliez-vous écrire « ' + s + ' » ?');
+    throw synErr(t, 'instruction inconnue « ' + t.text + ' »');
+  }
+  function readStmt(t) {
+    const s = { k: 'read', line: t.line, targets: [] };
+    let paren = false;
+    if (isOp('(')) { next(); paren = true; }
+    if (isSep() || isOp(')')) throw synErr(peek(), '« Lire » doit être suivi du nom d\'une variable : Lire(N)');
+    for (;;) { s.targets.push(lvalue()); if (isOp(',')) { next(); continue; } break; }
+    if (paren) { if (!isOp(')')) throw synErr(peek(), '« ) » attendu'); next(); }
+    return s;
+  }
+  function writeStmt(t) {
+    const s = { k: 'write', line: t.line, args: [] };
+    if (isSep()) return s;
+    if (isOp('(')) {
+      const save = p;
+      let ok = false;
+      try {
+        next();
+        if (isOp(')')) next();
+        else {
+          for (;;) { s.args.push(expr()); if (isOp(',')) { next(); continue; } break; }
+          if (!isOp(')')) throw null;
+          next();
+        }
+        ok = isSep() || !!term()[0];
+      } catch (e) { if (e && !(e instanceof AlgoError)) throw e; ok = false; }
+      if (ok) return s;
+      p = save; s.args = [];
+    }
+    for (;;) { s.args.push(expr()); if (isOp(',')) { next(); continue; } break; }
+    return s;
+  }
+  function condition(after) {
+    if (isSep() || isKey('alors') || isKey('faire')) throw synErr(peek(), 'condition attendue après « ' + after + ' »');
+    return expr();
+  }
+  function ifStmt(t) {
+    const s = { k: 'if', line: t.line, cond: condition('Si'), then: [], elifs: [], els: [] };
+    if (!isKey('alors')) throw synErr(peek(), '« Alors » attendu après la condition du Si');
+    next();
+    const stops = new Set(['sinon', 'sinonsi', 'finsi']);
+    let [body, tm] = block(stops, 'Si', t.line);
+    s.then = body;
+    while (tm === 'sinonsi') {
+      const et = next();
+      const ei = { line: et.line, cond: condition('SinonSi'), body: [] };
+      if (!isKey('alors')) throw synErr(peek(), '« Alors » attendu après la condition du SinonSi');
+      next();
+      [ei.body, tm] = block(stops, 'Si', t.line);
+      s.elifs.push(ei);
+    }
+    if (tm === 'sinon') { next(); [s.els, tm] = block(new Set(['finsi']), 'Si', t.line); }
+    if (tm !== 'finsi') throw synErr(peek(), '« FinSi » manquant : le « Si » de la ligne ' + t.line + ' n\'est pas fermé');
+    s.endLine = peek().line; consumeTerm();
+    return s;
+  }
+  function forStmt(t) {
+    const vt = identName('compteur');
+    const s = { k: 'for', line: t.line, v: { name: vt.text, key: vt.key, line: vt.line, col: vt.col, index: null }, step: null };
+    if (isKey('allant')) { next(); if (!isKey('de')) throw synErr(peek(), '« de » attendu : Pour i allant de 1 à 10'); next(); }
+    else if (isKey('de') || isOp('←') || isOp('=')) next();
+    else throw synErr(peek(), '« allant de » attendu : Pour ' + vt.text + ' allant de 1 à 10');
+    s.from = expr();
+    const tt = peek();
+    if (tt.kind === T.TO || (tt.kind === T.ID && (tt.key === 'a' || tt.key === 'jusqua'))) next();
+    else throw synErr(tt, '« à » attendu : Pour ' + vt.text + ' allant de 1 à 10');
+    s.to = expr();
+    if (isKey('pas')) { next(); if (isKey('de') || isOp('=')) next(); s.step = expr(); }
+    else if (isKey('par') && peekN(1).key === 'pas') { next(); next(); if (isKey('de') || isOp('=')) next(); s.step = expr(); }
+    if (isKey('faire')) next();
+    const [body, tm] = block(new Set(['finpour']), 'Pour', t.line);
+    if (tm !== 'finpour') throw synErr(peek(), '« FinPour » manquant : le « Pour » de la ligne ' + t.line + ' n\'est pas fermé');
+    s.body = body; s.endLine = peek().line; consumeTerm();
+    return s;
+  }
+  function whileStmt(t) {
+    const s = { k: 'while', line: t.line, cond: condition('Tant que') };
+    if (isKey('faire')) next();
+    const [body, tm] = block(new Set(['fintantque']), 'TantQue', t.line);
+    if (tm !== 'fintantque') throw synErr(peek(), '« FinTantQue » manquant : le « Tant que » de la ligne ' + t.line + ' n\'est pas fermé');
+    s.body = body; s.endLine = peek().line; consumeTerm();
+    return s;
+  }
+  function repeatStmt(t) {
+    const s = { k: 'repeat', line: t.line };
+    const [body, tm] = block(new Set(['jusqua']), 'Répéter', t.line);
+    if (tm !== 'jusqua') throw synErr(peek(), '« Jusqu\'à » manquant : le « Répéter » de la ligne ' + t.line + ' n\'est pas fermé');
+    s.body = body; s.untilLine = peek().line; consumeTerm();
+    s.cond = condition("Jusqu'à");
+    return s;
+  }
+  // expressions
+  function expr() { return orExpr(); }
+  function orExpr() { let l = andExpr(); while (isKey('ou')) { const t = next(); l = { k: 'bin', op: 'ou', l, r: andExpr(), line: t.line }; } return l; }
+  function andExpr() { let l = notExpr(); while (isKey('et')) { const t = next(); l = { k: 'bin', op: 'et', l, r: notExpr(), line: t.line }; } return l; }
+  function notExpr() { if (isKey('non')) { const t = next(); return { k: 'un', op: 'non', x: notExpr(), line: t.line }; } return cmpExpr(); }
+  function cmpExpr() {
+    let l = addExpr();
+    for (;;) {
+      const t = peek();
+      if (t.kind === T.OP) {
+        if (['=', '<>', '<', '>', '<=', '>='].includes(t.key)) { next(); l = { k: 'bin', op: t.key, l, r: addExpr(), line: t.line }; continue; }
+        if (t.key === '←') throw synErr(t, '« ← » est l\'affectation ; pour comparer, utilisez = , < , > , ≤ , ≥ ou ≠');
+      }
+      return l;
+    }
+  }
+  function addExpr() {
+    let l = mulExpr();
+    for (;;) { const t = peek(); if (t.kind === T.OP && (t.key === '+' || t.key === '-')) { next(); l = { k: 'bin', op: t.key, l, r: mulExpr(), line: t.line }; continue; } return l; }
+  }
+  function mulExpr() {
+    let l = unaryExpr();
+    for (;;) {
+      const t = peek(); let op = '';
+      if (t.kind === T.OP && (t.key === '*' || t.key === '/' || t.key === '%')) op = t.key === '%' ? 'mod' : t.key;
+      else if (t.kind === T.ID && (t.key === 'div' || t.key === 'mod')) op = t.key;
+      if (!op) return l;
+      next(); l = { k: 'bin', op, l, r: unaryExpr(), line: t.line };
+    }
+  }
+  function unaryExpr() {
+    const t = peek();
+    if (t.kind === T.OP && (t.key === '-' || t.key === '+')) { next(); const x = unaryExpr(); return t.key === '+' ? x : { k: 'un', op: '-', x, line: t.line }; }
+    return powExpr();
+  }
+  function powExpr() { const b = primary(); if (isOp('^')) { const t = next(); return { k: 'bin', op: '^', l: b, r: unaryExpr(), line: t.line }; } return b; }
+  function primary() {
+    const t = peek();
+    if (t.kind === T.NUM) { next(); return { k: 'lit', v: t.isInt ? I(t.num) : R(t.num), line: t.line }; }
+    if (t.kind === T.STR) { next(); return { k: 'lit', v: S(t.text), line: t.line }; }
+    if (t.kind === T.CHR) { next(); return { k: 'lit', v: C(t.text), line: t.line }; }
+    if (t.kind === T.OP && t.key === '(') {
+      next(); const e = expr();
+      if (!isOp(')')) throw synErr(peek(), '« ) » attendu, trouvé ' + show(peek()));
+      next(); return e;
+    }
+    if (t.kind === T.ID) {
+      if (t.key === 'vrai') { next(); return { k: 'lit', v: B(true), line: t.line }; }
+      if (t.key === 'faux') { next(); return { k: 'lit', v: B(false), line: t.line }; }
+      if (!RESERVED.has(t.key)) {
+        next();
+        if (isOp('(')) {
+          if (!isBuiltin(t.key)) throw synErr(t, 'fonction inconnue « ' + t.text + ' » (fonctions disponibles : abs, racine, ent, arrondi, longueur, max, min, alea)');
+          next();
+          const c = { k: 'call', name: t.text, key: t.key, args: [], line: t.line };
+          if (!isOp(')')) for (;;) { c.args.push(expr()); if (isOp(',')) { next(); continue; } break; }
+          if (!isOp(')')) throw synErr(peek(), '« ) » attendu');
+          next();
+          if (c.args.length !== BUILTINS[t.key]) throw synErr(t, 'la fonction « ' + t.text + ' » attend ' + BUILTINS[t.key] + ' valeur(s)');
+          return c;
+        }
+        const v = { k: 'var', name: t.text, key: t.key, index: null, line: t.line };
+        if (isOp('[')) { next(); v.index = expr(); if (!isOp(']')) throw synErr(peek(), '« ] » attendu'); next(); }
+        return v;
+      }
+    }
+    if (t.kind === T.NL || t.kind === T.EOF) throw synErr(t, 'expression incomplète : une valeur est attendue');
+    throw synErr(t, 'valeur attendue, trouvé ' + show(t));
+  }
+
+  // programme
+  skipSeps();
+  if (isKey('algorithme')) { next(); const parts = []; while (!isSep()) parts.push(next().text); prog.name = parts.join(' '); }
+  for (;;) {
+    skipSeps();
+    const t = peek();
+    if (t.kind === T.EOF) return prog;
+    if (isKey('variables') || isKey('variable') || isKey('var')) { next(); prog.hasVarSection = true; if (isOp(':')) next(); declarations(); }
+    else if (isKey('constantes') || isKey('constante') || isKey('const')) { next(); if (isOp(':')) next(); constants(); }
+    else if (isKey('declaration') || isKey('declarations')) skipLine();
+    else if (isKey('debut')) {
+      next();
+      const [body, tm] = block(new Set(['fin']), 'Début', t.line);
+      if (tm !== 'fin') throw synErr(peek(), '« Fin » manquant : un algorithme commence par Début et se termine par Fin');
+      consumeTerm(); prog.body = body; return prog;
+    } else {
+      const [body, tm] = block(new Set(['fin']), '', 0);
+      if (tm === 'fin') consumeTerm();
+      prog.body = body; return prog;
+    }
+  }
+}
+
+// ---------------------------------------------------------------- valeurs
+function I(n) { return { k: 'int', v: n }; }
+function R(n) { return { k: 'real', v: n }; }
+function S(s) { return { k: 'str', v: s }; }
+function C(s) { return { k: 'char', v: s }; }
+function B(b) { return { k: 'bool', v: b }; }
+const isNum = v => v.k === 'int' || v.k === 'real';
+const isText = v => v.k === 'str' || v.k === 'char';
+const KIND_LABEL = { int: 'entier', real: 'réel', str: 'chaîne', char: 'caractère', bool: 'booléen' };
+function fmtReal(f) {
+  if (!isFinite(f)) return '∞';
+  let r = Math.abs(f) >= 1e15 ? f : Math.round(f * 1e9) / 1e9;
+  if (Object.is(r, -0)) r = 0;
+  let s = String(r);
+  if (/e/i.test(s)) {
+    s = Math.abs(r) >= 1 ? BigInt(Math.round(r)).toString() : r.toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
+  }
+  return s === '-0' ? '0' : s;
+}
+function str(v) {
+  switch (v.k) {
+    case 'int': return String(v.v);
+    case 'real': return fmtReal(v.v);
+    case 'str': case 'char': return v.v;
+    case 'bool': return v.v ? 'Vrai' : 'Faux';
+  }
+  return '?';
+}
+function repr(v) { return v.k === 'str' ? '«' + v.v + '»' : v.k === 'char' ? "'" + v.v + "'" : str(v); }
+const MAXI = Number.MAX_SAFE_INTEGER;
+function checkInt(n, line) { if (!Number.isSafeInteger(n)) throw rtErr(line, 'nombre entier trop grand (dépassement de capacité)'); return I(n); }
+
+function parseInput(s, typ) {
+  const raw = s, t = s.trim(), numText = t.replace(/,/g, '.');
+  const intRe = /^[+-]?\d+$/, fRe = /^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$/;
+  switch (typ) {
+    case 'entier':
+      if (intRe.test(t) && Number.isSafeInteger(+t)) return [I(+t), ''];
+      if (fRe.test(numText)) { const f = parseFloat(numText); if (f === Math.trunc(f) && Math.abs(f) < 9e15) return [I(f), '']; }
+      return [null, 'il faut un nombre entier (sans virgule), par exemple 12'];
+    case 'reel':
+      if (fRe.test(numText)) return [R(parseFloat(numText)), ''];
+      return [null, 'il faut un nombre, par exemple 15.5'];
+    case 'chaine': return [S(raw), ''];
+    case 'caractere': return Array.from(raw).length === 1 ? [C(raw), ''] : [null, 'il faut un seul caractère, par exemple A'];
+    case 'booleen': {
+      const k = norm(t);
+      if (['vrai', 'v', '1', 'oui'].includes(k)) return [B(true), ''];
+      if (['faux', 'f', '0', 'non'].includes(k)) return [B(false), ''];
+      return [null, 'il faut Vrai ou Faux'];
+    }
+  }
+  if (intRe.test(t) && Number.isSafeInteger(+t)) return [I(+t), ''];
+  if (t !== '' && fRe.test(numText)) return [R(parseFloat(numText)), ''];
+  return [S(raw), ''];
+}
+
+// ---------------------------------------------------------------- interpréteur (générateurs)
+class Interp {
+  constructor(prog, hooks) {
+    this.prog = prog; this.hooks = hooks; this.vars = new Map(); this.order = [];
+    this.steps = 0; this.maxSteps = 1000000; this.lastOut = '';
+  }
+  *run() {
+    for (const d of this.prog.decls) for (const n of d.names) {
+      const v = { name: n, type: d.type, val: null, set: false, isConst: false };
+      if (d.type.isArray) { const size = d.type.hi - d.type.lo + 1; v.arr = new Array(size).fill(null); v.aset = new Array(size).fill(false); }
+      this.vars.set(norm(n), v); this.order.push(norm(n));
+    }
+    for (const c of this.prog.consts) {
+      this.vars.set(norm(c.name), { name: c.name, type: null, val: this.eval(c.expr), set: true, isConst: true });
+      this.order.push(norm(c.name));
+    }
+    yield* this.block(this.prog.body);
+  }
+  *before(line) {
+    this.steps++;
+    if (this.maxSteps > 0 && this.steps > this.maxSteps) throw rtErr(line, "trop d'étapes (" + this.maxSteps + ') : la boucle ne s\'arrête jamais ? Vérifiez que la condition finit par devenir fausse.');
+    this.curLine = line;
+    yield { t: 'step', line };
+  }
+  after(line, note) { if (this.hooks.after) this.hooks.after(line, note || ''); }
+  *block(body) { for (const s of body) yield* this.stmt(s); }
+  *stmt(s) {
+    switch (s.k) {
+      case 'assign': yield* this.before(s.line); this.store(s.target, this.eval(s.expr), s.line); this.after(s.line); break;
+      case 'read': yield* this.before(s.line); for (const t of s.targets) yield* this.read(t, s.line); this.after(s.line); break;
+      case 'write': {
+        yield* this.before(s.line);
+        const text = joinParts(s.args.map(a => str(this.eval(a))));
+        this.lastOut = text;
+        if (this.hooks.output) this.hooks.output(text);
+        this.after(s.line, 'affiche : ' + text);
+        break;
+      }
+      case 'if': {
+        yield* this.before(s.line);
+        let c = this.cond(s.cond, s.line);
+        this.after(s.line, boolNote(c));
+        if (c) { yield* this.block(s.then); return; }
+        for (const ei of s.elifs) {
+          yield* this.before(ei.line);
+          c = this.cond(ei.cond, ei.line);
+          this.after(ei.line, boolNote(c));
+          if (c) { yield* this.block(ei.body); return; }
+        }
+        yield* this.block(s.els);
+        break;
+      }
+      case 'for': {
+        yield* this.before(s.line);
+        const from = this.eval(s.from), to = this.eval(s.to), step = s.step ? this.eval(s.step) : I(1);
+        if (!isNum(from) || !isNum(to) || !isNum(step)) throw rtErr(s.line, 'les bornes de la boucle Pour doivent être des nombres');
+        if (step.v === 0) throw rtErr(s.line, 'le pas de la boucle Pour ne peut pas être 0');
+        const allInt = from.k === 'int' && to.k === 'int' && step.k === 'int';
+        let cur = from, first = true;
+        for (;;) {
+          if (!first) yield* this.before(s.line);
+          first = false;
+          const cont = step.v > 0 ? cur.v <= to.v + 1e-12 : cur.v >= to.v - 1e-12;
+          if (!cont) { this.after(s.line, s.v.name + ' = ' + str(cur) + ' : fin de la boucle'); break; }
+          this.store(s.v, cur, s.line);
+          this.after(s.line, s.v.name + ' = ' + str(cur));
+          yield* this.block(s.body);
+          const cv = this.load(s.v.key, null, s.v.name, s.line);
+          cur = allInt && cv.k === 'int' ? checkInt(cv.v + step.v, s.line) : R(cv.v + step.v);
+        }
+        break;
+      }
+      case 'while':
+        for (;;) {
+          yield* this.before(s.line);
+          const c = this.cond(s.cond, s.line);
+          this.after(s.line, boolNote(c));
+          if (!c) break;
+          yield* this.block(s.body);
+        }
+        break;
+      case 'repeat':
+        for (;;) {
+          yield* this.block(s.body);
+          yield* this.before(s.untilLine);
+          const c = this.cond(s.cond, s.untilLine);
+          this.after(s.untilLine, boolNote(c));
+          if (c) break;
+        }
+        break;
+    }
+  }
+  cond(e, line) {
+    const v = this.eval(e);
+    if (v.k !== 'bool') throw rtErr(line, 'la condition doit être vraie ou fausse (ici elle vaut ' + repr(v) + ')');
+    return v.v;
+  }
+  lookup(key, name, line, forWrite) {
+    let v = this.vars.get(key);
+    if (v) return v;
+    if (this.prog.hasVarSection) throw rtErr(line, 'la variable « ' + name + ' » n\'est pas déclarée. Ajoutez-la dans la partie Variables (ex. : ' + name + ' : entier)');
+    if (!forWrite) throw rtErr(line, 'la variable « ' + name + ' » n\'a pas encore de valeur (il faut d\'abord la lire ou lui affecter une valeur)');
+    v = { name, type: null, val: null, set: false, isConst: false };
+    this.vars.set(key, v); this.order.push(key);
+    return v;
+  }
+  index(v, idx, line) {
+    if (!v.type || !v.type.isArray) throw rtErr(line, '« ' + v.name + ' » n\'est pas un tableau');
+    let iv = this.eval(idx);
+    if (iv.k === 'real' && iv.v === Math.trunc(iv.v)) iv = I(iv.v);
+    if (iv.k !== 'int') throw rtErr(line, 'l\'indice du tableau « ' + v.name + ' » doit être un entier');
+    if (iv.v < v.type.lo || iv.v > v.type.hi) throw rtErr(line, 'indice ' + iv.v + ' hors du tableau « ' + v.name + ' » (indices de ' + v.type.lo + ' à ' + v.type.hi + ')');
+    return iv.v - v.type.lo;
+  }
+  load(key, idx, name, line) {
+    const v = this.lookup(key, name, line, false);
+    if (idx) {
+      const i = this.index(v, idx, line);
+      if (!v.aset[i]) throw rtErr(line, 'la case ' + v.name + '[' + (i + v.type.lo) + '] n\'a pas encore de valeur');
+      return v.arr[i];
+    }
+    if (v.type && v.type.isArray) throw rtErr(line, '« ' + v.name + ' » est un tableau : précisez la case, ex. ' + v.name + '[1]');
+    if (!v.set) throw rtErr(line, 'la variable « ' + v.name + ' » n\'a pas encore de valeur (il faut d\'abord la lire ou lui affecter une valeur)');
+    return v.val;
+  }
+  store(t, val, line) {
+    const v = this.lookup(t.key, t.name, line, true);
+    if (v.isConst) throw rtErr(line, '« ' + v.name + ' » est une constante : sa valeur ne peut pas changer');
+    if (t.index) {
+      const i = this.index(v, t.index, line);
+      v.arr[i] = convert(v.type.base, val, v.name + '[' + (i + v.type.lo) + ']', line);
+      v.aset[i] = true; return;
+    }
+    if (v.type && v.type.isArray) throw rtErr(line, '« ' + v.name + ' » est un tableau : précisez la case, ex. ' + v.name + '[1] ← …');
+    if (v.type) val = convert(v.type.base, val, v.name, line);
+    v.val = val; v.set = true;
+  }
+  *read(t, line) {
+    const v = this.lookup(t.key, t.name, line, true);
+    if (v.isConst) throw rtErr(line, '« ' + v.name + ' » est une constante : on ne peut pas la lire');
+    const typ = v.type ? v.type.base : '';
+    let label = t.name;
+    if (t.index) label = v.name + '[' + (this.index(v, t.index, line) + v.type.lo) + ']';
+    const req = { line, name: label, type: typeLabel(typ), last: this.lastOut, error: '' };
+    for (;;) {
+      const s = yield { t: 'input', req: Object.assign({}, req) };
+      if (s === null || s === undefined) throw STOP;
+      const [val, msg] = parseInput(s, typ);
+      if (!msg) { this.store(t, val, line); return; }
+      req.error = '« ' + s + ' » n\'est pas valable : ' + msg + '.';
+    }
+  }
+  snapshot() {
+    const out = [];
+    for (const k of this.order) {
+      const v = this.vars.get(k);
+      let typ = '';
+      if (v.type) typ = typeStr(v.type); else if (v.isConst) typ = 'constante'; else if (v.set) typ = KIND_LABEL[v.val.k];
+      let val = '?';
+      if (v.type && v.type.isArray) val = '[' + v.arr.map((x, i) => v.aset[i] ? repr(x) : '?').join(' ; ') + ']';
+      else if (v.set) val = repr(v.val);
+      out.push([v.name, typ, val]);
+    }
+    return out;
+  }
+  eval(e) {
+    switch (e.k) {
+      case 'lit': return e.v;
+      case 'var': return this.load(e.key, e.index, e.name, e.line);
+      case 'un': {
+        const x = this.eval(e.x);
+        if (e.op === '-') {
+          if (x.k === 'int') return I(-x.v);
+          if (x.k === 'real') return R(-x.v);
+          throw rtErr(e.line, 'le signe « - » s\'applique à un nombre, pas à ' + repr(x));
+        }
+        if (x.k !== 'bool') throw rtErr(e.line, '« non » s\'applique à une condition (vrai/faux)');
+        return B(!x.v);
+      }
+      case 'bin': {
+        if (e.op === 'et' || e.op === 'ou') {
+          const l = this.eval(e.l);
+          if (l.k !== 'bool') throw rtErr(e.line, '« ' + e.op + ' » relie deux conditions (vrai/faux)');
+          if (e.op === 'et' && !l.v) return B(false);
+          if (e.op === 'ou' && l.v) return B(true);
+          const r = this.eval(e.r);
+          if (r.k !== 'bool') throw rtErr(e.line, '« ' + e.op + ' » relie deux conditions (vrai/faux)');
+          return r;
+        }
+        return binop(e.op, this.eval(e.l), this.eval(e.r), e.line);
+      }
+      case 'call': return callBuiltin(e, e.args.map(a => this.eval(a)));
+    }
+    throw rtErr(0, 'expression inconnue');
+  }
+}
+const boolNote = b => b ? 'condition vraie' : 'condition fausse';
+function joinParts(parts) {
+  let s = '';
+  parts.forEach((p, i) => {
+    if (i > 0 && p !== '' && s !== '') {
+      const last = s[s.length - 1];
+      if (last !== ' ' && last !== '\t' && p[0] !== ' ' && p[0] !== '\t') s += ' ';
+    }
+    s += p;
+  });
+  return s;
+}
+function convert(base, val, name, line) {
+  switch (base) {
+    case 'entier':
+      if (val.k === 'int') return val;
+      if (val.k === 'real') {
+        if (val.v === Math.trunc(val.v) && Math.abs(val.v) < 9e15) return I(val.v);
+        throw rtErr(line, '« ' + name + ' » est de type entier : impossible d\'y ranger la valeur réelle ' + str(val) + ' (utilisez div pour une division entière, ou déclarez ' + name + ' en réel)');
+      }
+      break;
+    case 'reel': if (val.k === 'int') return R(val.v); if (val.k === 'real') return val; break;
+    case 'chaine': if (isText(val)) return S(val.v); break;
+    case 'caractere':
+      if (isText(val) && Array.from(val.v).length === 1) return C(val.v);
+      if (isText(val)) throw rtErr(line, '« ' + name + ' » est de type caractère : il ne peut contenir qu\'une seule lettre');
+      break;
+    case 'booleen': if (val.k === 'bool') return val; break;
+    default: return val;
+  }
+  throw rtErr(line, 'type incompatible : « ' + name + ' » est de type ' + typeLabel(base) + ' mais la valeur ' + repr(val) + ' est de type ' + KIND_LABEL[val.k]);
+}
+function numOnly(op, l, r, line) {
+  if (!isNum(l) || !isNum(r)) { const bad = isNum(l) ? r : l; throw rtErr(line, 'l\'opération « ' + op + ' » s\'applique à des nombres, pas à ' + repr(bad)); }
+}
+function asInt(v) { if (v.k === 'int') return v.v; if (v.k === 'real' && v.v === Math.trunc(v.v)) return v.v; return null; }
+function binop(op, l, r, line) {
+  switch (op) {
+    case '+':
+      if (isText(l) && isText(r)) return S(l.v + r.v);
+      if (isText(l) !== isText(r) && (isText(l) || isText(r))) throw rtErr(line, 'impossible d\'additionner un texte et un nombre');
+      numOnly(op, l, r, line);
+      return l.k === 'int' && r.k === 'int' ? checkInt(l.v + r.v, line) : R(l.v + r.v);
+    case '-':
+      numOnly(op, l, r, line);
+      return l.k === 'int' && r.k === 'int' ? checkInt(l.v - r.v, line) : R(l.v - r.v);
+    case '*':
+      numOnly('×', l, r, line);
+      return l.k === 'int' && r.k === 'int' ? checkInt(l.v * r.v, line) : R(l.v * r.v);
+    case '/':
+      numOnly(op, l, r, line);
+      if (r.v === 0) throw rtErr(line, 'division par zéro');
+      return R(l.v / r.v);
+    case 'div': case 'mod': {
+      numOnly(op, l, r, line);
+      const li = asInt(l), ri = asInt(r);
+      if (li === null || ri === null) throw rtErr(line, '« ' + op + ' » s\'utilise avec des nombres entiers');
+      if (ri === 0) throw rtErr(line, 'division par zéro');
+      return op === 'div' ? I(Math.trunc(li / ri)) : I(li % ri);
+    }
+    case '^':
+      numOnly(op, l, r, line);
+      if (l.k === 'int' && r.k === 'int' && r.v >= 0) {
+        const res = Math.pow(l.v, r.v);
+        if (Number.isSafeInteger(res)) return I(res);
+        throw rtErr(line, 'nombre entier trop grand (dépassement de capacité)');
+      }
+      return R(Math.pow(l.v, r.v));
+    case '=': case '<>': case '<': case '>': case '<=': case '>=': {
+      let c;
+      if (isNum(l) && isNum(r)) {
+        const a = l.v, b = r.v;
+        if (l.k === 'int' && r.k === 'int') c = a < b ? -1 : a > b ? 1 : 0;
+        else if (Math.abs(a - b) < 1e-9 * Math.max(1, Math.abs(a), Math.abs(b))) c = 0;
+        else c = a < b ? -1 : 1;
+      } else if (isText(l) && isText(r)) c = l.v < r.v ? -1 : l.v > r.v ? 1 : 0;
+      else if (l.k === 'bool' && r.k === 'bool') {
+        if (op !== '=' && op !== '<>') throw rtErr(line, 'on ne peut comparer deux conditions qu\'avec = ou ≠');
+        c = l.v !== r.v ? 1 : 0;
+      } else throw rtErr(line, 'comparaison impossible entre ' + repr(l) + ' (' + KIND_LABEL[l.k] + ') et ' + repr(r) + ' (' + KIND_LABEL[r.k] + ')');
+      return B({ '=': c === 0, '<>': c !== 0, '<': c < 0, '>': c > 0, '<=': c <= 0, '>=': c >= 0 }[op]);
+    }
+  }
+  throw rtErr(line, 'opération inconnue ' + op);
+}
+function callBuiltin(c, a) {
+  const num = i => { if (!isNum(a[i])) throw rtErr(c.line, 'la fonction « ' + c.name + ' » attend un nombre'); return a[i].v; };
+  switch (c.key) {
+    case 'abs': if (a[0].k === 'int') return I(Math.abs(a[0].v)); return R(Math.abs(num(0)));
+    case 'racine': case 'rac': case 'sqrt': { const x = num(0); if (x < 0) throw rtErr(c.line, 'racine d\'un nombre négatif impossible'); return R(Math.sqrt(x)); }
+    case 'carre': if (a[0].k === 'int') return binop('*', a[0], a[0], c.line); { const x = num(0); return R(x * x); }
+    case 'ent': return I(Math.floor(num(0)));
+    case 'arrondi': { const x = num(0); return I(x < 0 ? -Math.round(-x) : Math.round(x)); }
+    case 'longueur': case 'long': if (!isText(a[0])) throw rtErr(c.line, '« longueur » s\'applique à une chaîne'); return I(Array.from(a[0].v).length);
+    case 'alea': { const n = Math.trunc(num(0)); if (n < 1) throw rtErr(c.line, 'alea(n) : n doit être au moins 1'); return I(1 + Math.floor(Math.random() * n)); }
+    case 'max': case 'min': { const r = binop('<', a[0], a[1], c.line); return (c.key === 'max') === r.v ? a[1] : a[0]; }
+  }
+  throw rtErr(c.line, 'fonction inconnue');
+}
+
+// ---------------------------------------------------------------- pilote (même API que la version WebAssembly)
+const RUN = 0, STEP = 1, ANIM = 2;
+let cur = null;
+function tokClass(t) {
+  switch (t.kind) {
+    case T.ID:
+      if (['et', 'ou', 'non', 'div', 'mod', 'vrai', 'faux'].includes(t.key)) return 'lg';
+      if (isKeyword(t.key) || t.key === 'jusqu' || t.key === 'fintant' || t.key === 'tq') return 'kw';
+      if (isBuiltin(t.key)) return 'fn';
+      return '';
+    case T.TO: return 'kw';
+    case T.STR: case T.CHR: return 'st';
+    case T.NUM: return 'nb';
+    case T.OP: return t.key === '←' ? 'ar' : '';
+    case T.COM: return 'cm';
+    case T.ERR: return 'er';
+  }
+  return '';
+}
+function errObj(e) { return { line: e.line || 0, msg: e.full ? e.full() : String(e), syntax: !!e.syntax }; }
+
+function start(src, mode, delay, cb) {
+  if (cur) stop();
+  let prog;
+  try { prog = parse(src); } catch (e) { if (e instanceof AlgoError) return errObj(e); throw e; }
+  const s = { mode, delay, cb, done: false, pending: null, timer: 0, traceN: 0, outLines: 0, lastLine: 0 };
+  const it = new Interp(prog, {
+    output: text => {
+      if (++s.outLines > 20000) throw rtErr(it.curLine || 0, 'trop de lignes affichées : la boucle ne s\'arrête jamais ?');
+      cb.output(text);
+    },
+    after: (line, note) => {
+      if (++s.traceN > 3000) return;
+      const instr = line >= 1 && line - 1 < prog.lines.length ? prog.lines[line - 1].trim() : '';
+      cb.trace(s.traceN, line, instr, it.snapshot(), note);
+    }
+  });
+  s.it = it; s.gen = it.run();
+  cur = s;
+  pump(s, undefined);
+  return null;
+}
+function finish(s, err) {
+  if (s.done) return;
+  s.done = true; clearTimeout(s.timer); s.pending = null;
+  if (cur === s) cur = null;
+  const res = { ok: !err, stopped: err === STOP, steps: s.traceN, vars: s.it.snapshot() };
+  if (err && err !== STOP) res.error = errObj(err);
+  s.cb.done(res);
+}
+function pump(s, val) {
+  let budget = 30000;
+  for (;;) {
+    if (s.done) return;
+    let r;
+    try { r = s.gen.next(val); }
+    catch (e) { if (e === STOP || e instanceof AlgoError) { finish(s, e); return; } finish(s, rtErr(0, 'erreur interne : ' + e)); return; }
+    val = undefined;
+    if (r.done) { finish(s, null); return; }
+    const y = r.value;
+    if (y.t === 'step') {
+      s.lastLine = y.line;
+      if (s.mode === RUN) {
+        if (--budget <= 0) { s.timer = setTimeout(() => pump(s, undefined), 0); return; }
+        continue;
+      }
+      s.pending = 'step';
+      s.cb.step(y.line, s.it.snapshot(), s.mode === STEP);
+      if (s.done) return;
+      if (s.mode === ANIM) s.timer = setTimeout(() => resumeStep(s), s.delay);
+      return;
+    }
+    if (y.t === 'input') {
+      s.pending = 'input';
+      s.cb.input(y.req, s.it.snapshot());
+      return;
+    }
+  }
+}
+function resumeStep(s) { if (s.done || s.pending !== 'step') return; clearTimeout(s.timer); s.pending = null; pump(s, undefined); }
+function stop() { const s = cur; if (s) finish(s, STOP); }
+
+const api = {
+  lex(src) {
+    const out = [];
+    for (const t of lex(src, true)) { const c = tokClass(t); if (c) out.push(t.pos, t.end, c); }
+    return out;
+  },
+  start,
+  step() { const s = cur; if (s && s.pending === 'step') resumeStep(s); },
+  setMode(m) {
+    const s = cur; if (!s) return;
+    s.mode = m;
+    if (s.pending === 'step') {
+      clearTimeout(s.timer);
+      if (m === STEP) s.cb.step(s.lastLine, s.it.snapshot(), true);
+      else resumeStep(s);
+    }
+  },
+  setDelay(d) { if (cur) cur.delay = d; },
+  input(text, ok) {
+    const s = cur; if (!s || s.pending !== 'input') return;
+    s.pending = null;
+    pump(s, ok ? String(text) : null);
+  },
+  stop,
+  running() { return !!cur; },
+  parse, lexTokens: lex, AlgoError, Interp,
+};
+global.AlgoCore = api;
+if (typeof module !== 'undefined') module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+window.Algo = Object.assign({}, window.AlgoCore, { examples: [["Leçon 13 – Notion d'algorithme", "Somme de deux nombres", "Début\n    Lire A\n    Lire B\n    S ← A + B\n    Afficher S\nFin"], ["Leçon 13 – Notion d'algorithme", "Aire d'un rectangle", "Début\n    Lire longueur\n    Lire largeur\n    Aire ← longueur × largeur\n    Afficher Aire\nFin"], ["Leçon 13 – Notion d'algorithme", "Moyenne de deux notes (Admis / Ajourné)", "Algorithme Moyenne_Deux_Notes\nVariables\n    note1, note2, moyenne : réel\nDébut\n    Écrire(«Donner la première note»)\n    Lire(note1)\n    Écrire(«Donner la deuxième note»)\n    Lire(note2)\n    moyenne ← (note1 + note2) / 2\n    Écrire(«La moyenne est :», moyenne)\n    Si moyenne >= 10 Alors\n        Afficher «Admis»\n    Sinon\n        Afficher «Ajourné»\n    FinSi\nFin"], ["Leçon 14 – Variables", "Bonjour Yahya", "Variables\n    nom : chaine\n    âge : entier\nDébut\n    nom ← «Yahya»\n    age ← 18\n    Afficher «Bonjour «, nom\n    Afficher «Tu as», age, « ans»\nFin"], ["Leçon 14 – Variables", "Surface d'un rectangle", "Algorithme Surface_Rectangle\nVariables\n    largeur, longueur, surface : réel\nDébut\n    Écrire(«Donner la largeur»)\n    Lire(largeur)\n    Écrire(«Donner la longueur»)\n    Lire(longueur)\n    surface ← largeur × longueur\n    Écrire(«La surface est :», surface)\nFin"], ["Leçon 15 – Conditions", "Admis / Ajourné", "Début\n    Lire note\n    Si note >= 10 Alors\n        Afficher «Admis»\n    Sinon\n        Afficher «Ajourné»\n    FinSi\nFin"], ["Leçon 15 – Conditions", "Majeur / Mineur", "Lire age\nSi age >= 18 Alors\n    Afficher «Majeur»\nSinon\n    Afficher «Mineur»\nFinSi"], ["Leçon 15 – Conditions", "Positif / Négatif ou nul", "Algorithme Signe\nVariables\n    x : réel\nDébut\n    Écrire(«Donner un nombre»)\n    Lire(x)\n    Si x > 0 Alors\n        Écrire(«Positif»)\n    Sinon\n        Écrire(«Négatif ou nul»)\n    FinSi\nFin"], ["Leçon 15 – Conditions", "Mention selon la moyenne", "Algorithme Mention\nVariables\n    moyenne : réel\nDébut\n    Écrire(«Donner la moyenne de l'élève»)\n    Lire(moyenne)\n    Si moyenne >= 16 Alors\n        Écrire(«Excellent»)\n    Sinon\n        Si moyenne >= 12 Alors\n            Écrire(«Bien»)\n        Sinon\n            Si moyenne >= 10 Alors\n                Écrire(«Passable»)\n            Sinon\n                Écrire(«Insuffisant»)\n            FinSi\n        FinSi\n    FinSi\nFin"], ["Leçon 16 – Écriture d'un algorithme", "Double d'un nombre", "Algorithme Double\nVariables\n    N, D : entier\nDébut\n    Écrire(«Donner un nombre»)\n    Lire(N)\n    D ← N * 2\n    Écrire(«Le double est :», D)\nFin"], ["Leçon 16 – Écriture d'un algorithme", "Âge dans 5 ans", "Algorithme Age_Futur\nVariables\n    Age, Futur : entier\nDébut\n    Écrire(«Donner votre âge»)\n    Lire(Age)\n    Futur ← Age + 5\n    Écrire(«Dans 5 ans vous aurez :», Futur)\nFin"], ["Leçon 17 – Test d'un algorithme", "Somme (lignes numérotées)", "1.    Début\n2.    Lire A\n3.    Lire B\n4.    S ← A + B\n5.    Afficher S\n6.    Fin"], ["Leçon 17 – Test d'un algorithme", "N ← N × 2", "1.    Début\n2.    Lire N\n3.    N ← N × 2\n4.    Afficher N\n5.    Fin"], ["Leçon 17 – Test d'un algorithme", "Carré d'un nombre", "Algorithme Carre\nVariables\n    N, C : entier\nDébut\n    Écrire(«Donner un nombre»)\n    Lire(N)\n    C ← N × N\n    Écrire(«Le carré de», N, «est», C)\nFin"], ["Leçon 18 – Boucles", "Bonjour 5 fois (Pour)", "Pour i allant de 1 à 5\n    Afficher «Bonjour»\nFinPour"], ["Leçon 18 – Boucles", "Afficher 1 à 3 (Tant que)", "i ← 1\nTant que i ≤ 3\n    Afficher i\n    i ← i + 1\nFinTantQue"], ["Leçon 18 – Boucles", "Nombres de 1 à 10", "Pour i allant de 1 à 10\n    Afficher i\nFinPour"], ["Leçon 18 – Boucles", "Nombres de 10 à 1", "Algorithme Decompte\nVariables\n    i : entier\nDébut\n    i ← 10\n    TantQue i >= 1 Faire\n        Écrire(i)\n        i ← i - 1\n    FinTantQue\nFin"], ["Leçon 19 – Utilisation des boucles", "Bonjour 5 fois (TantQue … Faire)", "i ← 1\nTantQue i ≤ 5 Faire\n  Ecrire «Bonjour»\n  i ← i + 1\nFinTantQue"], ["Leçon 19 – Utilisation des boucles", "Nombres de 5 à 15", "Pour i allant de 5 à 15 Faire\n  Ecrire i\nFinPour"], ["Leçon 19 – Utilisation des boucles", "Table de multiplication", "Algorithme Table_Multiplication\nVariables\n    N, i : entier\nDébut\n    Écrire(«Donner un nombre»)\n    Lire(N)\n    Pour i allant de 1 à 10 Faire\n        Écrire(N, «x», i, «=», N * i)\n    FinPour\nFin"], ["Leçon 20 – Tâche d'un algorithme", "Pair ou impair", "Début\n    Lire N\n    Si N mod 2 = 0 Alors\n     Afficher «Nombre pair»\n    Sinon\n     Afficher «Nombre impair»\n    FinSi\nFin"], ["Leçon 20 – Tâche d'un algorithme", "Surface d'un cercle", "Début\n    Lire R\n    Surface ← 3.14 × R × R\n    Afficher Surface\nFin"], ["Leçon 20 – Tâche d'un algorithme", "Maximum de deux nombres", "Début\n Lire A\n Lire B\n Si A > B Alors\n  Max ← A\n Sinon\n  Max ← B\n FinSi\n Afficher Max\nFin"], ["Leçon 20 – Tâche d'un algorithme", "Produit 1 × 2 × … × N", "Début\n Lire N\n F ← 1\n Pour i de 1 à N Faire\n  F ← F × i\n FinPour\n Afficher F\nFin"], ["Leçon 21 – Algorithme final", "Moyenne de trois notes", "Algorithme calcul_moyenne\nVariables\n    note1, note2, note3, moyenne : réel\nDébut\n    Écrire(«Donner la note 1»)\n    Lire(note1)\n    Écrire(«Donner la note 2»)\n    Lire(note2)\n    Écrire(«Donner la note 3»)\n    Lire(note3)\n    moyenne ← (note1 + note2 + note3) / 3\n    Écrire(«La moyenne est :», moyenne)\nFin"], ["Leçon 22 – Évaluation", "Triple d'un nombre", "Algorithme triple\nVariables : nb, triple : réels\nDébut\n    Écrire(«Entrez un nombre :»)\n    Lire(nb)\n    triple ← nb * 3\n    Écrire(«Le triple de «, nb, « est «, triple)\nFin"], ["Leçon 22 – Évaluation", "Plus petit de deux nombres", "Algorithme minimum\nVariables : a, b : réels\nDébut\n    Écrire(«Entrez le premier nombre :»)\n    Lire(a)\n    Écrire(«Entrez le deuxième nombre :»)\n    Lire(b)\n    Si a > b Alors\n       Écrire(«Le plus petit nombre est «, b)\n    Sinon\n       Si b > a Alors\n         Écrire(«Le plus petit nombre est «, a)\n       Sinon\n         Écrire(«Les deux nombres sont égaux»)\n       FinSi\n    FinSi\nFin"], ["Leçon 22 – Évaluation", "Plus petit (avec variable min)", "Algorithme minimum\nVariables : a, b, min : réels\nDébut\n    Écrire(«Entrez le premier nombre :»)\n    Lire(a)\n    Écrire(«Entrez le deuxième nombre :»)\n    Lire(b)\n    Si a > b Alors\n       min ← b\n    Sinon\n       min ← a\n    FinSi\n    Écrire(«Le plus petit nombre est «, min)\nFin"]], template: "Algorithme Nom_Algorithme\nVariables\n    N : entier\nDébut\n    Écrire(«Donner un nombre»)\n    Lire(N)\n    Écrire(«Vous avez donné :», N)\nFin\n" });
+</script>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const ta = $('code'), hl = $('hl'), gin = $('gin');
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('algo3as.' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('algo3as.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+let fs = store.get('fs', 15), animDelay = store.get('delay', 700);
+let curName = store.get('name', ''), dirty = store.get('dirty', false);
+let curLine = 0, errLine = 0, sess = null, outCount = 0, traceRows = 0, prevVars = {};
+let dockSeg = 'vars', lastVars = [];
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2200); }
+function status(s) { $('status').textContent = s; }
+function setFont() {
+  document.documentElement.style.setProperty('--fs', fs + 'px');
+  document.documentElement.style.setProperty('--lh', Math.round(fs * 1.55) + 'px');
+  render();
+}
+function lh() { return Math.round(fs * 1.55); }
+function updateTitle() { $('title').innerHTML = 'Algo3AS <small>· ' + esc(curName || 'Sans titre') + (dirty ? ' *' : '') + '</small>'; }
+
+/* ---------- coloration ---------- */
+let rq = 0;
+function render() {
+  rq = 0;
+  const src = ta.value;
+  let html = '';
+  if (window.Algo) {
+    const t = Algo.lex(src);
+    let p = 0;
+    for (let i = 0; i < t.length; i += 3) {
+      const a = t[i], b = t[i + 1], c = t[i + 2];
+      if (a < p) continue;
+      html += esc(src.slice(p, a)) + '<span class="' + c + '">' + esc(src.slice(a, b)) + '</span>';
+      p = b;
+    }
+    html += esc(src.slice(p));
+  } else html = esc(src);
+  const lines = html.split('\n');
+  let out = '', g = '';
+  for (let i = 0; i < lines.length; i++) {
+    const n = i + 1, cls = n === errLine ? ' err' : (n === curLine ? ' cur' : '');
+    out += '<span class="L' + cls + '">' + (lines[i] || ' ') + '</span>';
+    g += '<div class="' + cls.trim() + '">' + (n === curLine ? '►' + n : n) + '</div>';
+  }
+  hl.innerHTML = out;
+  gin.innerHTML = g;
+  sync();
+}
+function schedule() { if (!rq) rq = requestAnimationFrame(render); }
+function sync() {
+  hl.style.transform = 'translate(' + (-ta.scrollLeft) + 'px,' + (-ta.scrollTop) + 'px)';
+  gin.style.transform = 'translateY(' + (-ta.scrollTop) + 'px)';
+}
+ta.addEventListener('scroll', sync);
+function scrollToLine(n) {
+  if (!n) return;
+  const y = (n - 1) * lh(), h = ta.clientHeight;
+  if (y < ta.scrollTop + 10 || y > ta.scrollTop + h - lh() * 2) ta.scrollTop = Math.max(0, y - h / 3);
+  sync();
+}
+
+/* ---------- édition ---------- */
+let saveT = 0;
+ta.addEventListener('input', e => {
+  const pos = ta.selectionStart;
+  if (pos >= 2 && ta.value.slice(pos - 2, pos) === '<-') {
+    ta.setRangeText('←', pos - 2, pos, 'end');
+  }
+  if (e.inputType === 'insertLineBreak' || e.inputType === 'insertParagraph' || (pos > 0 && ta.value[pos - 1] === '\n' && e.inputType !== 'insertFromPaste' && e.inputType !== 'deleteContentBackward')) {
+    const ind = indentFor(ta.value, ta.selectionStart - 1);
+    if (ind) ta.setRangeText(ind, ta.selectionStart, ta.selectionStart, 'end');
+  }
+  if (errLine) { errLine = 0; hideErr(); status('Prêt.'); }
+  if (!dirty) { dirty = true; store.set('dirty', true); updateTitle(); }
+  clearTimeout(saveT); saveT = setTimeout(() => store.set('current', ta.value), 400);
+  schedule();
+});
+function indentFor(text, nlPos) {
+  const start = text.lastIndexOf('\n', nlPos - 1) + 1;
+  const line = text.slice(start, nlPos);
+  let ind = line.match(/^[ \t]*/)[0];
+  const first = (line.trim().split(/[\s(]/)[0] || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  if (['si', 'sinon', 'sinonsi', 'pour', 'tantque', 'tant', 'repeter', 'debut'].includes(first)) ind += '    ';
+  else if (['variables', 'variable', 'constantes'].includes(first) && line.trim().split(/\s+/).length === 1) ind += '    ';
+  return ind;
+}
+function insertText(s, caretBack) {
+  if (sess) return;
+  const a = ta.selectionStart, b = ta.selectionEnd;
+  ta.setRangeText(s, a, b, 'end');
+  if (caretBack) { const p = ta.selectionStart - caretBack; ta.setSelectionRange(p, p); }
+  ta.dispatchEvent(new Event('input'));
+  ta.focus();
+}
+function insertBlock(lines) {
+  if (sess) return;
+  const a = ta.selectionStart;
+  const ls = ta.value.lastIndexOf('\n', a - 1) + 1;
+  const ind = ta.value.slice(ls, a).match(/^[ \t]*/)[0];
+  const atStart = ta.value.slice(ls, a).trim() === '';
+  let txt = lines.map((l, i) => (i === 0 ? (atStart ? '' : '\n' + ind) : ind) + l).join('\n');
+  ta.setRangeText(txt, a, ta.selectionEnd, 'end');
+  // placer le curseur sur la ligne vide intérieure
+  const at = ta.value.indexOf('\n' + ind + '    \n', a);
+  if (at >= 0 && at < a + txt.length + 2) { const p = at + 1 + ind.length + 4; ta.setSelectionRange(p, p); }
+  ta.dispatchEvent(new Event('input'));
+  ta.focus();
+}
+const SYMS = [
+  ['←', () => insertText('← ')], ['« »', () => insertText('«»', 1)], ['≤', () => insertText('≤ ')], ['≥', () => insertText('≥ ')],
+  ['≠', () => insertText('≠ ')], ['×', () => insertText('× ')], ['/', () => insertText('/')], ['( )', () => insertText('()', 1)],
+  [',', () => insertText(', ')], [':', () => insertText(' : ')], ['⇥', () => insertText('    ')],
+  ['Lire', () => insertText('Lire()', 1), 1], ['Écrire', () => insertText('Écrire()', 1), 1],
+  ['Si', () => insertBlock(['Si  Alors', '    ', 'FinSi']), 1], ['Si/Sinon', () => insertBlock(['Si  Alors', '    ', 'Sinon', '    ', 'FinSi']), 1],
+  ['Pour', () => insertBlock(['Pour i allant de 1 à 10 Faire', '    ', 'FinPour']), 1],
+  ['TantQue', () => insertBlock(['TantQue  Faire', '    ', 'FinTantQue']), 1],
+  ['Répéter', () => insertBlock(['Répéter', '    ', "Jusqu'à "]), 1],
+  ['mod', () => insertText(' mod '), 1], ['div', () => insertText(' div '), 1], ['et', () => insertText(' et '), 1], ['ou', () => insertText(' ou '), 1],
+  ['entier', () => insertText('entier'), 1], ['réel', () => insertText('réel'), 1], ['chaîne', () => insertText('chaîne'), 1],
+];
+for (const [label, fn, w] of SYMS) {
+  const b = document.createElement('button');
+  b.textContent = label; if (w) b.className = 'w';
+  b.addEventListener('pointerdown', e => e.preventDefault());
+  b.addEventListener('click', fn);
+  $('symbar').appendChild(b);
+}
+
+/* ---------- onglets & couches ---------- */
+const wideMQ = window.matchMedia('(min-width: 900px)');
+const isWide = () => wideMQ.matches;
+let rightTab = 'out';
+function showTab(t) {
+  if (isWide()) {
+    if (t === 'ed') { render(); return; }
+    rightTab = t;
+    document.querySelectorAll('.rtabs button').forEach(b => b.classList.toggle('on', b.dataset.r === t));
+    ['out', 'vars', 'trace'].forEach(x => $('p-' + x).classList.toggle('on', x === t));
+    $('p-ed').classList.add('on');
+    if (t === 'out') $('outBadge').hidden = true;
+    return;
+  }
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === 'p-' + t));
+  if (t === 'out') { $('outBadge').hidden = true; }
+  if (t === 'ed') render();
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.t)));
+document.querySelectorAll('.rtabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.r)));
+function applyLayout() {
+  if (isWide()) { showTab(rightTab); }
+  else { const on = document.querySelector('nav.tabs button.on'); showTab(on ? on.dataset.t : 'ed'); }
+}
+(wideMQ.addEventListener ? wideMQ.addEventListener('change', applyLayout) : wideMQ.addListener(applyLayout));
+const layers = [];
+function pushLayer(name, close) { layers.push({ name, close }); }
+function popLayer(fn) {
+  const l = layers.pop();
+  if (l) l.close();
+  if (fn) setTimeout(fn, 0);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if (layers.length) { e.preventDefault(); popLayer(); } else if (sess) { e.preventDefault(); Algo.stop(); } return; }
+  if (layers.length) return;
+  if (e.key === 'F5') { e.preventDefault(); run(0); }
+  else if (e.key === 'F10') { e.preventDefault(); run(1); }
+  else if (e.key === 'F6') { e.preventDefault(); run(2); }
+  else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); run(0); }
+});
+
+function openDrawer() { $('drawer').classList.add('on'); $('scrim').classList.add('on'); pushLayer('drawer', closeDrawer); }
+function closeDrawer() { $('drawer').classList.remove('on'); $('scrim').classList.remove('on'); }
+$('bMenu').onclick = openDrawer;
+$('scrim').onclick = () => popLayer();
+
+function modal(title, bodyHTML, buttons, onopen) {
+  $('gTitle').textContent = title;
+  $('gBody').innerHTML = bodyHTML;
+  const f = $('gFoot'); f.innerHTML = '';
+  for (const [label, cls, fn] of buttons) {
+    const b = document.createElement('button'); b.textContent = label; if (cls) b.className = cls;
+    b.onclick = () => { let next = null; if (fn) { const r = fn(); if (r === false) return; if (typeof r === 'function') next = r; } popLayer(next); };
+    f.appendChild(b);
+  }
+  $('mGen').classList.add('on'); $('scrim').classList.add('on');
+  pushLayer('modal', () => { $('mGen').classList.remove('on'); if (!$('drawer').classList.contains('on')) $('scrim').classList.remove('on'); });
+  if (onopen) onopen();
+}
+function afterDrawer(fn) { if (layers.length && layers[layers.length - 1].name === 'drawer') popLayer(fn); else fn(); }
+
+/* ---------- fichiers (stockés dans le téléphone) ---------- */
+function programs() { return store.get('programs', {}); }
+function setCode(code, name) {
+  ta.value = code; curName = name || ''; dirty = false; errLine = 0; curLine = 0;
+  store.set('current', code); store.set('name', curName); store.set('dirty', false);
+  updateTitle(); hideErr(); ta.scrollTop = 0; ta.scrollLeft = 0; render();
+}
+function confirmDiscard(then) {
+  if (!dirty || !ta.value.trim()) return then();
+  modal('Algorithme modifié', '<p>L\'algorithme actuel n\'est pas enregistré. Voulez-vous l\'enregistrer d\'abord ?</p>', [
+    ['Annuler', '', null], ['Ne pas enregistrer', 'd', () => then], ['Enregistrer', 'p', () => () => save(false, then)]
+  ]);
+}
+function save(as, then) {
+  if (!as && curName) {
+    const p = programs(); p[curName] = ta.value; store.set('programs', p);
+    dirty = false; store.set('dirty', false); updateTitle(); toast('Enregistré : ' + curName); if (then) then(); return;
+  }
+  const guess = curName || (ta.value.match(/^\s*Algorithme\s+([^\n]+)/i) || [, ''])[1].trim();
+  modal('Enregistrer sous', '<p>Nom de l\'algorithme :</p><input id="sName" class="field" value="' + esc(guess).replace(/"/g, '&quot;') + '">', [
+    ['Annuler', '', null],
+    ['Enregistrer', 'p', () => {
+      const n = $('sName').value.trim(); if (!n) { toast('Donnez un nom'); return false; }
+      const p = programs(); p[n] = ta.value; store.set('programs', p);
+      curName = n; store.set('name', n); dirty = false; store.set('dirty', false); updateTitle(); toast('Enregistré : ' + n);
+      if (then) return then;
+    }]
+  ], () => setTimeout(() => $('sName').focus(), 100));
+}
+function openList() {
+  const p = programs(), names = Object.keys(p).sort((a, b) => a.localeCompare(b, 'fr'));
+  let h = names.length ? '<div class="list">' : '<p class="empty">Aucun algorithme enregistré pour l\'instant.<br>Utilisez « Enregistrer » dans le menu.</p>';
+  names.forEach((n, i) => { h += '<button class="it" data-i="' + i + '"><span>📄 ' + esc(n) + '</span><b class="del" data-del="' + i + '">Suppr.</b></button>'; });
+  if (names.length) h += '</div>';
+  modal('Mes algorithmes', h, [['Fermer', '', null]], () => {
+    $('gBody').querySelectorAll('.it').forEach(b => b.onclick = e => {
+      const i = +b.dataset.i, n = names[i];
+      if (e.target.dataset.del !== undefined) {
+        e.stopPropagation();
+        if (b.dataset.sure) { delete p[n]; store.set('programs', p); b.remove(); toast('Supprimé : ' + n); }
+        else { b.dataset.sure = 1; e.target.textContent = 'Confirmer ?'; }
+        return;
+      }
+      popLayer(() => confirmDiscard(() => { setCode(p[n], n); clearRun(); status('Ouvert : ' + n); }));
+    });
+  });
+}
+function examplesList() {
+  let h = '<div class="list">', g = '';
+  Algo.examples.forEach((e, i) => {
+    if (e[0] !== g) { g = e[0]; h += '<div class="grp">' + esc(g) + '</div>'; }
+    h += '<button class="it" data-i="' + i + '"><span>' + esc(e[1]) + '</span>›</button>';
+  });
+  h += '</div>';
+  modal('Exemples du livre', h, [['Fermer', '', null]], () => {
+    $('gBody').querySelectorAll('.it').forEach(b => b.onclick = () => {
+      const e = Algo.examples[+b.dataset.i];
+      popLayer(() => confirmDiscard(() => { setCode(e[2], ''); clearRun(); status('Exemple : ' + e[1] + ' — appuyez sur ▶ Exécuter ou ⏭ Pas à pas'); }));
+    });
+  });
+}
+function copyCode() {
+  const done = () => toast('Algorithme copié');
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done, fallback); else fallback();
+  function fallback() { ta.focus(); ta.select(); try { document.execCommand('copy'); done(); } catch (e) { toast('Copie impossible'); } }
+}
+function pasteDialog() {
+  modal('Coller un algorithme', '<p>Collez le texte ici (Ctrl+V, ou appui long → Coller) :</p><textarea id="pasteBox" class="field" wrap="off"></textarea>', [
+    ['Annuler', '', null], ['Remplacer', 'p', () => { const v = $('pasteBox').value; return () => confirmDiscard(() => { setCode(v, ''); dirty = true; store.set('dirty', true); updateTitle(); clearRun(); }); }]
+  ], () => setTimeout(() => $('pasteBox').focus(), 100));
+}
+
+document.querySelectorAll('#drawer [data-a]').forEach(b => b.addEventListener('click', () => {
+  const a = b.dataset.a;
+  if (a === 'fs-' || a === 'fs+') { fs = Math.max(11, Math.min(26, fs + (a === 'fs+' ? 1 : -1))); store.set('fs', fs); setFont(); toast('Taille ' + fs); return; }
+  if (a === 'sp-' || a === 'sp+') {
+    animDelay = Math.max(150, Math.min(2500, Math.round(animDelay * (a === 'sp+' ? 0.65 : 1.5))));
+    store.set('delay', animDelay); if (sess) Algo.setDelay(animDelay); toast('Animation : ' + (animDelay / 1000).toFixed(1) + ' s par instruction'); return;
+  }
+  afterDrawer(() => {
+    if (sess && ['new', 'open', 'examples', 'paste'].includes(a)) { toast('Arrêtez d\'abord l\'exécution'); return; }
+    switch (a) {
+      case 'new': confirmDiscard(() => { setCode(Algo.template, ''); clearRun(); }); break;
+      case 'open': openList(); break;
+      case 'save': save(false); break;
+      case 'saveas': save(true); break;
+      case 'examples': examplesList(); break;
+      case 'copy': copyCode(); break;
+      case 'paste': pasteDialog(); break;
+      case 'help': help(); break;
+      case 'about': modal('À propos', '<p><b>Algo3AS</b> — exécuteur d\'algorithmes en pseudo-code français, conforme à la syntaxe du livre <i>Informatique 3AS</i>.</p><p>Les algorithmes enregistrés restent dans ce navigateur, sur cet appareil. Pour les garder ailleurs, utilisez « Copier l\'algorithme ».</p><p>Raccourcis : F5 exécuter, F10 pas à pas, F6 animer, Échap arrêter.</p>', [['OK', 'p', null]]); break;
+    }
+  });
+}));
+$('bHelp').onclick = help;
+function help() {
+  modal('Aide — syntaxe', '<div id="helpbody"><pre>' + esc(HELP) + '</pre></div>', [['Fermer', 'p', null]]);
+}
+
+/* ---------- exécution ---------- */
+function hideErr() { $('errbar').classList.remove('on'); }
+function showErrBar(msg) { $('errtxt').textContent = '✖ ' + msg; $('errbar').classList.add('on'); }
+$('errx').onclick = () => { hideErr(); errLine = 0; render(); };
+
+function clearRun() {
+  $('out').innerHTML = ''; outCount = 0; $('outBadge').hidden = true;
+  $('varsbox').innerHTML = '<div class="empty">Les variables et leurs valeurs apparaîtront ici pendant l\'exécution.</div>';
+  $('tracebox').innerHTML = '<div class="empty">La trace montre, instruction par instruction, les valeurs des variables.</div>';
+  traceRows = 0; prevVars = {}; lastVars = []; curLine = 0; errLine = 0; hideErr();
+  $('dock').classList.remove('on'); render();
+}
+function addOut(text, cls) {
+  const box = $('out');
+  if (box.firstChild && box.firstChild.className === 'empty') box.innerHTML = '';
+  const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = text; box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+  if (cls === undefined || cls === '' || cls === 'i') {
+    outCount++;
+    if (!$('p-out').classList.contains('on')) { const bd = $('outBadge'); bd.textContent = outCount; bd.hidden = false; }
+  }
+  if (dockSeg === 'out' && $('dock').classList.contains('on')) renderDock();
+}
+function varsTable(vs, mark) {
+  if (!vs.length) return '<div class="empty">Aucune variable pour l\'instant.</div>';
+  let h = '<table><tr><th>Variable</th><th>Type</th><th>Valeur</th></tr>';
+  for (const [n, t, v] of vs) {
+    const chg = mark && (prevVars[n] === undefined ? v !== '?' : prevVars[n] !== v);
+    h += '<tr' + (chg ? ' class="chg"' : '') + '><td><b>' + esc(n) + '</b></td><td>' + esc(t) + '</td><td class="v">' + esc(v) + '</td></tr>';
+  }
+  return h + '</table>';
+}
+function showVars(vs) {
+  $('varsbox').innerHTML = varsTable(vs, true);
+  lastVars = vs;
+  if ($('dock').classList.contains('on')) renderDock();
+  const nv = {}; for (const [n, , v] of vs) nv[n] = v;
+  showVars.pending = nv;
+}
+function commitVars() { if (showVars.pending) { prevVars = showVars.pending; showVars.pending = null; } }
+function renderDock() {
+  const b = $('dockbody');
+  if (dockSeg === 'vars') b.innerHTML = varsTable(lastVars, true);
+  else { b.innerHTML = '<div class="out" style="min-height:100%">' + $('out').innerHTML + '</div>'; b.scrollTop = b.scrollHeight; }
+}
+document.querySelectorAll('#dock .seg').forEach(s => s.onclick = () => {
+  dockSeg = s.dataset.d; document.querySelectorAll('#dock .seg').forEach(x => x.classList.toggle('on', x === s)); renderDock();
+});
+$('dockx').onclick = () => $('dock').classList.remove('on');
+
+function addTrace(n, line, instr, vs, note) {
+  const box = $('tracebox');
+  let tb = $('tracet');
+  if (!tb) {
+    box.innerHTML = '<table id="tracet"><thead><tr><th>N°</th><th>Ligne</th><th>Instruction</th><th>Variables après</th><th>Remarque</th></tr></thead><tbody></tbody></table>';
+    tb = $('tracet');
+  }
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + n + '</td><td>' + line + '</td><td class="ins">' + esc(instr) + '</td><td class="vs">' + esc(vs.map(v => v[0] + ' = ' + v[2]).join(' ; ')) + '</td><td class="nt">' + esc(note) + '</td>';
+  tb.tBodies[0].appendChild(tr);
+  traceRows++;
+  if (traceRows === 3000) { const t2 = document.createElement('tr'); t2.innerHTML = '<td colspan="5">… trace limitée aux 3000 premières étapes</td>'; tb.tBodies[0].appendChild(t2); }
+}
+
+function setRunning(on, mode) {
+  $('bStop').disabled = !on;
+  ta.readOnly = on;
+  $('bStep').textContent = on && mode !== 0 ? '⏭ Suivant' : '⏭ Pas à pas';
+  $('bAnim').textContent = on && mode === 2 ? '⏸ Pause' : '⏵ Animer';
+  $('symbar').style.display = on ? 'none' : '';
+}
+function run(mode) {
+  if (!window.Algo) return;
+  if (sess) {
+    if (mode === 2 && sess.mode === 2) mode = 1; // Pause
+    // mettre l'interface à jour AVANT d'appeler l'interpréteur (il peut terminer pendant l'appel)
+    sess.mode = mode;
+    setRunning(true, mode);
+    if (mode === 0) { status('Exécution jusqu\'à la fin…'); showTab('out'); }
+    if (mode === 1 && sess.waiting) { sess.waiting = false; commitVars(); Algo.step(); }
+    else Algo.setMode(mode);
+    return;
+  }
+  ta.blur();
+  clearRun();
+  const cb = {
+    output: t => addOut(t, ''),
+    input: (req, vs) => { showVars(vs); commitVars(); curLine = req.line; render(); scrollToLine(req.line); openInput(req); },
+    step: (line, vs, wait) => {
+      curLine = line; showVars(vs); render(); scrollToLine(line);
+      sess.waiting = wait;
+      $('dockinfo').textContent = 'Prochaine instruction : ligne ' + line;
+      if (wait) status('Ligne ' + line + ' surlignée : appuyez sur « Suivant » (F10) pour l\'exécuter.');
+      else { commitVars(); status('Animation… ligne ' + line); }
+    },
+    trace: (n, line, instr, vs, note) => addTrace(n, line, instr, vs, note),
+    done: r => finish(r)
+  };
+  sess = { mode, waiting: false };
+  setRunning(true, mode);
+  addOut('── Exécution ──', 's');
+  if (mode === 0) { status('Exécution en cours…'); showTab('out'); }
+  else { if (isWide()) showTab('vars'); else { $('dock').classList.add('on'); renderDock(); } status('Pas à pas…'); }
+  const err = Algo.start(ta.value, mode, animDelay, cb);
+  if (err) { sess = null; setRunning(false); finish({ ok: false, error: err, steps: 0, vars: [] }); }
+}
+function finish(r) {
+  const wasStep = sess && sess.mode !== 0;
+  sess = null; setRunning(false, 0); curLine = 0;
+  if (r.vars && r.vars.length) showVars(r.vars);
+  commitVars();
+  if (r.error) {
+    const e = r.error;
+    addOut('✖ ' + e.msg, 'e');
+    errLine = e.line || 0;
+    showErrBar(e.msg);
+    status('✖ ' + e.msg);
+    showTab('ed'); setTimeout(() => scrollToLine(errLine), 30);
+  } else if (r.stopped) {
+    addOut('■ Exécution arrêtée', 'w'); status('Exécution arrêtée.');
+  } else {
+    addOut('✔ Fin de l\'algorithme (' + r.steps + ' étapes)', 'ok'); status('Terminé sans erreur ✔');
+  }
+  $('dockinfo').textContent = r.error ? 'Erreur' : 'Terminé';
+  if (!wasStep) $('dock').classList.remove('on'); else renderDock();
+  render();
+}
+$('bRun').onclick = () => run(0);
+$('bStep').onclick = () => run(1);
+$('bAnim').onclick = () => run(2);
+$('bStop').onclick = () => { if (sess) { Algo.stop(); } };
+
+/* ---------- saisie (Lire) ---------- */
+let inputReq = null;
+function openInput(req) {
+  inputReq = req;
+  $('inTitle').textContent = 'Ligne ' + req.line + ' :  Lire(' + req.name + ')';
+  $('inQ').textContent = req.last ? req.last : 'L\'algorithme attend une valeur.';
+  $('inLab').textContent = 'Valeur de ' + req.name + (req.type ? ' (' + req.type + ')' : '') + ' :';
+  $('inErr').textContent = req.error || '';
+  const v = $('inVal'); v.value = '';
+  const numeric = req.type === 'entier' || req.type === 'réel';
+  v.setAttribute('inputmode', numeric ? 'decimal' : 'text');
+  $('inNeg').style.display = numeric || !req.type ? '' : 'none';
+  $('mInput').classList.add('on'); $('scrim').classList.add('on');
+  pushLayer('input', () => { $('mInput').classList.remove('on'); $('scrim').classList.remove('on'); if (inputReq) { inputReq = null; Algo.input('', false); } });
+  setTimeout(() => v.focus(), 60);
+  status('Ligne ' + req.line + ' : saisissez la valeur de ' + req.name);
+}
+function submitInput() {
+  if (!inputReq) return;
+  const val = $('inVal').value;
+  inputReq = null;
+  addOut('> ' + val, 'i');
+  popLayer(() => Algo.input(val, true));
+}
+$('inOk').onclick = submitInput;
+$('inVal').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submitInput(); } });
+$('inStop').onclick = () => popLayer();
+$('inNeg').addEventListener('pointerdown', e => e.preventDefault());
+$('inNeg').onclick = () => { const v = $('inVal'); v.value = v.value.startsWith('-') ? v.value.slice(1) : '-' + v.value; };
+
+/* ---------- aide ---------- */
+const HELP = `STRUCTURE GÉNÉRALE
+  Algorithme Nom_Algorithme
+  Variables
+      N, D : entier
+      moyenne : réel
+      nom : chaîne
+  Début
+      Instructions
+  Fin
+
+• « Variables » est facultatif ; s'il existe, toutes les variables doivent y être déclarées.
+• Types : entier, réel, chaîne, caractère, booléen
+• Majuscules et accents indifférents : Écrire = Ecrire.
+
+INSTRUCTIONS
+  Lire(N)        ou  Lire N
+  Écrire(«Le double est :», D)
+  Afficher S
+  D ← N * 2      (tapez <- pour obtenir ←)
+
+CONDITIONS
+  Si note >= 10 Alors
+      Afficher «Admis»
+  Sinon
+      Afficher «Ajourné»
+  FinSi
+
+BOUCLES
+  Pour i allant de 1 à 10 Faire
+      Écrire(i)
+  FinPour
+  Pour i de 10 à 1 pas -1 Faire … FinPour
+
+  TantQue i ≤ 5 Faire
+      i ← i + 1
+  FinTantQue
+
+  Répéter
+      Lire(N)
+  Jusqu'à N > 0
+
+OPÉRATEURS
+  +  -  * ou ×  / ou ÷  ^   div (quotient)  mod (reste)
+  =  ≠ ou <>  <  >  ≤ ou <=  ≥ ou >=
+  et  ou  non     Vrai  Faux
+
+FONCTIONS
+  abs  racine  ent  arrondi  longueur  max  min  alea
+
+TABLEAUX
+  T : tableau[1..10] de entier      T[i] ← 0
+
+COMMENTAIRES
+  // texte ignoré
+
+BOUTONS
+  ▶ Exécuter : tout l'algorithme.
+  ⏭ Pas à pas : la ligne jaune est la prochaine instruction ;
+     « Suivant » l'exécute. Les variables s'affichent en bas.
+  ⏵ Animer : pas à pas automatique (vitesse dans le menu ☰).
+  ■ Stop : arrêter.
+L'onglet « Trace » donne le tableau de test complet.`;
+
+/* ---------- démarrage ---------- */
+window.algoReady = () => {
+  const saved = store.get('current', null);
+  if (saved !== null) { ta.value = saved; } else { ta.value = Algo.template; }
+  updateTitle(); setFont();
+  status('Prêt. Écrivez un algorithme puis appuyez sur ▶ Exécuter.');
+};
+window.addEventListener('DOMContentLoaded', () => { applyLayout(); algoReady(); });
+</script>
+</body>
+</html>
